@@ -1,0 +1,7 @@
+PLAN CRAWLER STEPS
+what is the most common signposting
+test on zenodo
+recursive
+max depth
+
+RDFa what is it?
