@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: httplink
+Version: 0.2.0
+Summary: Library for parsing RFC 8288 "Link" HTTP headers
+Home-page: https://github.com/joernheissler/httplink
+Author: Jörn Heissler
+Author-email: NOSPAM-httplink@joern.heissler.de
+License: MIT
+Keywords: rfc8288,Web Linking
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.6
+
+HTTP Link Header Parser
+=======================
+
+Python (>= 3.6) library for parsing `RFC 8288 <https://tools.ietf.org/html/rfc8288>`__ HTTP Link headers.
+Python 2 is not `supported <https://github.com/joernheissler/httplink/pull/2>`__.
+
+.. code-block:: python3
+
+    from httplink import parse_link_header
+    result = parse_link_header('''
+       <https://example.com/foo/index.html>; rel=index;
+       foo*=UTF-8'en'b%c3%a5r, </path#frag>;rel="what ever"
+    ''')
+
+    ## Target URL:
+    print(result['index'].target)
+    # https://example.com/foo/index.html
+
+    ## Set of link relations:
+    print(result['index'].rel)
+    # {'index'}
+
+    ## Decoded attribute value:
+    print(result['index']['foo'])
+    # bår
+
+    ## Raw undecoded attributes:
+    print(result['index'].attributes)
+    # [('rel', 'index'), ('foo*', "UTF-8'en'b%c3%a5r")]
+
+    ## Iterate over all links:
+    for link in result.links:
+        print(link.rel, link.target)
+    # {'index'} https://example.com/foo/index.html
+    # {'ever', 'what'} /path#frag
+
+
+Multiple Link headers can be parsed at the same time if you concatenate them with ``,``.
+
+Redundant white space and comma delimiters are ignored.
+
+``["key"]``-access is always case-insensitive.
+
+
