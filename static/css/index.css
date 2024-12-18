@@ -3,3 +3,7 @@ main {
     flex-direction: column;
     align-items: center;
 }
+
+#urlInput {
+    width: 500px;
+}

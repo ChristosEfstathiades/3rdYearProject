@@ -3,12 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/css/global.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/crawled.css">
     <title>Results</title>
 </head>
 <body>
-    {{ data }}
-    {% for d in data.describedBy %}
-    <p>{% print(d.target, d.type) %}</p>
+    
+    
+    <p>----------------- Linkset elements ------------------</p>
+    <!-- {{ linkset }} -->
+    {% for link in linkset.signposts %}
+    <p>{% print(link) %}</p>
     {% endfor %}
+    <p>----------------- described by ------------------</p>
+    {% for d in s.describedBy %}
+    <p>{% print(d) %}</p>
+    {% endfor %}
+
+    <p>----------------- items ------------------</p>
+    {% for d in s.items %}
+    <p>{% print(d) %}</p>
+    {% endfor %}
+
+    <p>----------------- cite-as ------------------</p>
+    <p>{% print(s.citeAs) %}</p>
+    
+   
+    <p>---------------- Described by metadata -------------------</p>
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Predicate</th>
+            <th>Object</th>
+        </tr>
+        {% for s, p, o in kg %}
+        <tr>
+            <th>{% print(s) %}</th>
+            <th>{% print(p) %}</th>
+            <th>{% print(o) %}</th>
+        </tr>
+        <!-- <p>{% print(s, p, o) %}</p> -->
+        {% endfor %}
+    </table>
+    <p>---------------- Debug -------------------</p>
+    {{ s }}
 </body>
 </html>

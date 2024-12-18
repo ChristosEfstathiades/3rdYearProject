@@ -1,5 +1,8 @@
 from flask import Flask, request, render_template, url_for
-import signposting
+# import signposting
+# from rdflib import Graph, URIRef, util, RDF, Literal
+# from rdflib.namespace import FOAF
+from crawler import Crawler
 
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
 
@@ -15,13 +18,61 @@ def greet(name):
 def crawl():
     if request.method == 'POST':
         url = request.form.get('url')
-    
+        # https://doi.org/10.34894/SRSB8I
         ##Signposting crawl##
-        s = signposting.find_signposting_http(url)
-        # https://s11.no/2022/a2a-fair-metrics/01-http-describedby-only/
-        ####
+        # s = signposting.find_signposting_http(url)
+        
+        # linkElements = None
+        # kg = Graph() # used to create triples 
+        
+        # if len(s.signposts) == 0: #no signposting
+        #     print("No http signposting found")
+        #     s_html = signposting.find_signposting_html(url)
+        #     linkElements = s_html
+        #     print(linkElements.linksets)
+        #     # s = s_html
 
-        return render_template('crawled.html', data=s)
+
+        # if len(s.linksets) > 0:
+        #     print("linkset found")
+        #     for linkset in s.linksets:
+        #         linkElements = signposting.find_signposting_linkset(linkset.target)
+        #         print(len(linkElements.signposts))
+        #     # what type of linkset? json? txt?
+            
+        # # describedByGraph = describedby(s.describedBy)
+        # # for sub, pred, obj in describedByGraph:
+        # #     kg.add((sub, pred, obj))
+
+        # for link in s.items:
+        #     formatGuess = util.guess_format(link.target)
+        #     RDFfile = link.target
+        #     print(link)
+        #     # kg.add((URIRef(url), FOAF.Document, URIRef(link.target)))
+        
+        crawled = Crawler(url)
+        crawled.crawl()
+        kg = crawled.describedBy
+        s = crawled.signposts
+        linkElements = crawled.linksetSignposts
+        # print(len(crawled.signposts.linksets))
+        return render_template('crawled.html', kg=kg, s=s, linkset=linkElements)
+        # return render_template('crawled.html', s=s)
+
+# def describedby(describedBy):
+#     for link in describedBy:
+#         formatGuess = util.guess_format(link.target)
+#         RDFfile = link.target
+#         g = Graph().parse(RDFfile, format="text/turtle")
+#     return None
+
+# def recursive_crawl(s):
+    # for linkset in s.linksets:
+    #     g = Graph()
+    #     g.parse(linkset.target)
+    #     for s, p, o in g:
+    #         if s == URIRef()
+    #         kg.add((s,p,o))
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5555, debug=True)
