@@ -3,5 +3,23 @@ what is the most common signposting
 test on zenodo
 recursive
 max depth
-
+Bnode = blank node
 RDFa what is it?
+properties to look for:
+    linksets
+    describedBy
+    citeas
+    authors
+    items
+    licenses
+
+convert describedBy, items, citeas, linksets into functions 
+
+
+questions:
+
+schema.org/license vs license
+serialization??
+
+
+
