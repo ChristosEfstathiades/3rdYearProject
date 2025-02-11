@@ -6,7 +6,7 @@ class Crawler:
         self.origin = URI
         self.signposts = signposting.find_signposting_http(URI)
         self.describedBy = Graph()
-        self.acceptedFormats = ["application/ld+json", "text/turtle", "application/rdf+xml", "application/n-triples"]
+        self.acceptedFormats = ["turtle", "application/ld+json", "text/turtle", "application/rdf+xml", "application/n-triples"] # application/json, application/xml
         self.linksetSignposts = None
 
     def crawl(self):
@@ -18,6 +18,7 @@ class Crawler:
         self.items()
         self.author()
         self.licenses()
+        
 
     def linkset_handler(self):
         print("linkset found")
@@ -25,6 +26,7 @@ class Crawler:
         print(self.signposts.linksets)
         # error handle linksets by type
         for linkset in self.signposts.linksets:
+            print(linkset.target)
             self.linksetSignposts = signposting.find_signposting_linkset(linkset.target) # linksetSignposts should be array
             # for link in self.linksetSignposts:
             #     if link.rel == "describedby":
@@ -33,14 +35,16 @@ class Crawler:
     
     def described_by(self, links):
         for link in links:
-            # formatGuess = util.guess_format("https://biblio.ugent.be/publication/8762613.rdf")
-            if link.type in self.acceptedFormats:
+            linkType = link.type # fix: links that have the wrong type declared
+            if link.type == None: # Some links have undefined types
+                linkType = util.guess_format(link.target)
+            if linkType in self.acceptedFormats:
                 RDFfile = link.target
-                g = Graph().parse(RDFfile, format=link.type)
+                g = Graph().parse(RDFfile, format=linkType)
                 for sub, pred, obj in g:
                     self.describedBy.add((sub, pred, obj))
             else:
-                print("Parser does not accept format: " + link.type)
+                print("Parser does not accept format: " + linkType)
                 
     
     def cite_as(self):
