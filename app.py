@@ -59,13 +59,6 @@ def crawl():
         return render_template('crawled.html', kg=kg, s=s, linkset=linkElements)
         # return render_template('crawled.html', s=s)
 
-# def describedby(describedBy):
-#     for link in describedBy:
-#         formatGuess = util.guess_format(link.target)
-#         RDFfile = link.target
-#         g = Graph().parse(RDFfile, format="text/turtle")
-#     return None
-
 # def recursive_crawl(s):
     # for linkset in s.linksets:
     #     g = Graph()

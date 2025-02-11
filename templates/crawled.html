@@ -27,6 +27,14 @@
 
     <p>----------------- cite-as ------------------</p>
     <p>{% print(s.citeAs) %}</p>
+
+    <p>----------------- Author(s) ------------------</p>
+    {% for d in s.authors %}
+    <p>{% print(d) %}</p>
+    {% endfor %}
+
+    <p>----------------- license ------------------</p>
+    <p>{% print(s.license) %}</p>
     
    
     <p>---------------- Described by metadata -------------------</p>
