@@ -19,8 +19,13 @@ questions:
 Couldn't set up apache jena
 How to store data for recursion
 
-named graphs
+seperate named graphs for websites that can be combined into knowledge graph 
 conneg - format, 
 profile - subsey of syntactic type, 
 vnd - own profile
+
+crawling websites
+use rdflib to create graphs 
+use namespaces for predicate
+store graphs
 

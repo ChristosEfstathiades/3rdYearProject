@@ -20,10 +20,7 @@ def crawl():
         url = request.form.get('url')
         # https://doi.org/10.34894/SRSB8I
         ##Signposting crawl##
-        # s = signposting.find_signposting_http(url)
         
-        # linkElements = None
-        # kg = Graph() # used to create triples 
         
         # if len(s.signposts) == 0: #no signposting
         #     print("No http signposting found")
@@ -55,7 +52,9 @@ def crawl():
         kg = crawled.describedBy
         s = crawled.signposts
         linkElements = crawled.linksetSignposts
-        # print(len(crawled.signposts.linksets))
+
+        kg.serialize(destination="./RDF/describedBy.ttl")
+        
         return render_template('crawled.html', kg=kg, s=s, linkset=linkElements)
         # return render_template('crawled.html', s=s)
 
