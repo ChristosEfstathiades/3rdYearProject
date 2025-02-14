@@ -1,0 +1,48 @@
+@prefix ns1: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://doi.org/10.34894/SRSB8I> a ns1:Dataset ;
+    ns1:author [ a ns1:Person ;
+            ns1:affiliation [ a ns1:Organization ;
+                    ns1:name "Maastricht University" ] ;
+            ns1:familyName "Goldberg" ;
+            ns1:givenName "Anna" ;
+            ns1:name "Goldberg, Anna" ] ;
+    ns1:creator [ a ns1:Person ;
+            ns1:affiliation [ a ns1:Organization ;
+                    ns1:name "Maastricht University" ] ;
+            ns1:familyName "Goldberg" ;
+            ns1:givenName "Anna" ;
+            ns1:name "Goldberg, Anna" ] ;
+    ns1:dateModified "2021-10-19"^^ns1:Date ;
+    ns1:datePublished "2021-10-19"^^ns1:Date ;
+    ns1:description "During four months, several courts were visited to study the role of addiction in criminal cases in full detail. Whereas the analysis of addiction and criminal law in the previous chapters concerned a doctrinal and theoretical perspective, this chapter extends the discussion into the law in action by studying criminal cases with addicted offenders. As discussed, there are in principle several doctrinal possibilities in which addition may play a role. However, the question remains to what extent these possibilities are employed in practice. To gain more insight into the practical approach of addiction in criminal law, a thorough case law analysis is necessary. The goal of this study is to investigate in which tier of the criminal liability structure , and by whom, the addiction of the defendant is discussed, and whether neuroscientific information is used in that regard, and if so, in what way." ;
+    ns1:distribution [ a ns1:DataDownload ;
+            ns1:contentSize 260611 ;
+            ns1:contentUrl <https://dataverse.nl/api/access/datafile/192732> ;
+            ns1:description "Introduction to the research, research questions, methodology and sampling, and codebook (in Dutch)" ;
+            ns1:encodingFormat "application/pdf" ;
+            ns1:name "Protocol + codebook_DUTCH.pdf" ],
+        [ a ns1:DataDownload ;
+            ns1:contentSize 6256483 ;
+            ns1:contentUrl <https://dataverse.nl/api/access/datafile/192733> ;
+            ns1:description "Full dataset (in Dutch)" ;
+            ns1:encodingFormat "application/x-spss-sav" ;
+            ns1:name "Dataset_DUTCH-1.sav" ] ;
+    ns1:identifier "https://doi.org/10.34894/SRSB8I" ;
+    ns1:includedInDataCatalog [ a ns1:DataCatalog ;
+            ns1:name "DataverseNL" ;
+            ns1:url <https://dataverse.nl> ] ;
+    ns1:keywords "Addiction",
+        "Criminal law",
+        "Criminal responsibility",
+        "Law",
+        "Social Sciences" ;
+    ns1:license <http://creativecommons.org/publicdomain/zero/1.0> ;
+    ns1:name "Addiction in Dutch criminal cases" ;
+    ns1:provider [ a ns1:Organization ;
+            ns1:name "DataverseNL" ] ;
+    ns1:publisher [ a ns1:Organization ;
+            ns1:name "DataverseNL" ] ;
+    ns1:version "1" .
+
