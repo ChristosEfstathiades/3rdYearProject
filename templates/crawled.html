@@ -8,52 +8,26 @@
     <title>Results</title>
 </head>
 <body>
-    
-    
-    <p>----------------- Linkset elements ------------------</p>
-    <!-- {{ linkset }} -->
-    {% for link in linkset.signposts %}
-    <p>{% print(link) %}</p>
-    {% endfor %}
-    <p>----------------- described by ------------------</p>
-    {% for d in s.describedBy %}
-    <p>{% print(d) %}</p>
-    {% endfor %}
-
-    <p>----------------- items ------------------</p>
-    {% for d in s.items %}
-    <p>{% print(d) %}</p>
-    {% endfor %}
-
-    <p>----------------- cite-as ------------------</p>
-    <p>{% print(s.citeAs) %}</p>
-
-    <p>----------------- Author(s) ------------------</p>
-    {% for d in s.authors %}
-    <p>{% print(d) %}</p>
-    {% endfor %}
-
-    <p>----------------- license ------------------</p>
-    <p>{% print(s.license) %}</p>
-    
    
-    <p>---------------- Described by metadata -------------------</p>
+
+    {% for graph in graphs %}
+    <p>---------------- Signposts -------------------</p>
     <table>
         <tr>
             <th>Subject</th>
             <th>Predicate</th>
             <th>Object</th>
         </tr>
-        {% for s, p, o in kg %}
+        {% for s, p, o in graph %}
         <tr>
             <th>{% print(s) %}</th>
             <th>{% print(p) %}</th>
             <th>{% print(o) %}</th>
         </tr>
-        <!-- <p>{% print(s, p, o) %}</p> -->
         {% endfor %}
     </table>
-    <p>---------------- Debug -------------------</p>
-    {{ s }}
+    {% endfor %}
+    <!-- <p>---------------- Debug -------------------</p>
+    {{ s }} -->
 </body>
 </html>
