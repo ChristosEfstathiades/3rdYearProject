@@ -1,0 +1,32 @@
+requirements
+incrementally follow signposting to retrieve linked data
+load into knowledge graph
+execute explorative queries on the linked data
+select which resources to follow next 
+allow for heuristic fallback when no signposting available
+logic that dertermines when to stop crawl and how to select sources of interest
+deposit knowledge graph with associated provenance/origin
+
+additional features:
+linked data embedded in HTML
+FAIR  evaluation
+
+Features todo list:
+Store signposting in Graph
+Recursion steps:
+    fetch signposts
+    loop through signposts with handler functions
+    check if signpost target is crawlable
+    create graph
+    return graph
+
+alternative option with loop
+    while true:
+        fetch signposts from url[i] 
+        handler func for signposts/linksets
+            fetch the data
+            add data to graph[i]
+            check if target is crawlable
+            if crawlable add url to stack
+    
+
