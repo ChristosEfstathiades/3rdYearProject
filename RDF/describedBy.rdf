@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rdf:RDF
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:schema1="http://schema.org/"
 >
+  <rdf:Description rdf:about="https://doi.org/10.5281/zenodo.14065256">
+    <rdf:type rdf:resource="https://schema.org/Dataset"/>
+    <schema1:identifier>https://doi.org/10.5281/zenodo.14065256</schema1:identifier>
+    <schema1:name>UBB_Quantitative data_Biocultural Tourism</schema1:name>
+    <schema1:creator rdf:resource="https://ror.org/02rmd1t30"/>
+    <schema1:author rdf:resource="https://ror.org/02rmd1t30"/>
+    <schema1:publisher rdf:nodeID="N9a9cb1faba4d48e6952d54e29ad98cd5"/>
+    <schema1:dateCreated rdf:datatype="http://schema.org/Date">2024-11-11T08:49:13.930096+00:00</schema1:dateCreated>
+    <schema1:dateModified rdf:datatype="http://schema.org/Date">2024-11-11T08:49:14.175503+00:00</schema1:dateModified>
+    <schema1:datePublished rdf:datatype="http://schema.org/Date">2024-11-10</schema1:datePublished>
+    <schema1:contentSize>92.69 KB</schema1:contentSize>
+    <schema1:size>92.69 KB</schema1:size>
+    <schema1:license rdf:resource="https://creativecommons.org/licenses/by/4.0/legalcode"/>
+    <schema1:description>&lt;p&gt;Within WP2, &amp;ldquo;Case studies of transformative biodiversity practices&amp;rdquo;, UBB developed a questionnaire. The objective is to observe what variables influence the intention to have a biocultural touristic experience in a High Nature Value (HNV) area. The dependent variable is the &amp;ldquo;intention to have a biocultural touristic experience in an HNV area&amp;rdquo;. In developing the questionnaire, we started with the variables included in Ajzen&amp;rsquo;s Theory of Planned Behavior (attitude, subjective norm, perceived behavioral control, and intention). We extended the original model by adding the following variables: knowledge, awareness of HNV, values, trust in the authenticity of the biocultural experience, perception of the contribution of a touristic experience in HNV, and demographics. The questionnaire serves as a tool for the BIOTraCes community and beyond. It provides a data-driven foundation for understanding and influencing tourists&amp;rsquo; intentions and promotes sustainable and transformative biodiversity practices in HNV areas.&lt;/p&gt;</schema1:description>
+    <schema1:url rdf:resource="https://zenodo.org/records/14065256"/>
+    <schema1:distribution rdf:nodeID="Nb3fb1df95217458ba2ca1f3ea1e72fc4"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb3fb1df95217458ba2ca1f3ea1e72fc4">
+    <rdf:type rdf:resource="http://schema.org/DataDownload"/>
+    <schema1:contentUrl rdf:resource="https://zenodo.org/api/records/14065256/files/NM_BioTraCes_20241111_WP2_UBB_v2_ed1.csv/content"/>
+    <schema1:encodingFormat>text/csv</schema1:encodingFormat>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://ror.org/02rmd1t30">
+    <schema1:name>Babeș-Bolyai University</schema1:name>
+    <rdf:type rdf:resource="http://schema.org/Organization"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9a9cb1faba4d48e6952d54e29ad98cd5">
+    <rdf:type rdf:resource="http://schema.org/Organization"/>
+    <schema1:name>Zenodo</schema1:name>
+  </rdf:Description>
 </rdf:RDF>

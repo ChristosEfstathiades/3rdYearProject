@@ -5,32 +5,21 @@ class Crawler:
     def __init__(self, URI):
         self.origin = URI
         self.signposts = None
-        self.describedBy = Graph()
-        self.acceptedFormats = ["turtle", "application/ld+json", "text/turtle", "application/rdf+xml", "application/n-triples"] # application/json, application/xml
+        self.describedByMetadata = Graph()
+        self.describedByFormats = ["turtle", "application/ld+json", "text/turtle", "application/rdf+xml", "application/n-triples"] # application/json, application/xml
+        self.linksetFormats = ['application/linkset+json']
         self.linksetSignposts = None
-        self.ns = Namespace("https://www.iana.org/assignments/link-relations/")
-
+        self.ns = Namespace("http://www.iana.org/assignments/relation/")
         self.graphs = []
-        self.urls = [URI, "https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/"]
-
-    # def crawl(self):
-    #     if len(self.signposts.linksets) > 0:
-    #         self.linkset_handler()
-        
-    #     self.described_by(self.signposts.describedBy)
-    #     self.cite_as()
-    #     self.items()
-    #     self.author()
-    #     self.licenses()
+        self.urls = [URI]#, "https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/"]
 
     def crawl(self):
-        i = 0
-        while i < 5:
+        for i in range(5): # TBC
             if len(self.urls) <= i:
                 break
-            print(self.urls[i])
+            # print(self.urls[i])
             try:
-                self.signposts = signposting.find_signposting_http(self.urls[i]) # try statement
+                self.signposts = signposting.find_signposting_http(self.urls[i]) 
             except:
                 print("error") # add to this
             else:
@@ -38,41 +27,62 @@ class Crawler:
                     self.kg = Graph()
                     self.origin = self.urls[i]
 
+                    # Stores level 1 typed links 
                     self.cite_as()
                     self.items()
                     self.author()
                     self.licenses()
+                    self.types()
+                    self.collection()
+                    self.described_by()
+                    if len(self.kg) > 0:
+                        self.graphs.append(self.kg)
 
-                    self.graphs.append(self.kg)
-            i += 1
+                    # Level 2 typed links
+                    self.kg = Graph() # temporary solution, maybe change handler functions to be more generalised
+                    self.linkset_handler()
+                    if len(self.kg) > 0:
+                        self.graphs.append(self.kg)
+
+        
             
         
 
     def linkset_handler(self):
-        print("linkset found")
-        self.linksetDescribedBy = []
-        print(self.signposts.linksets)
-        # error handle linksets by type
-        for linkset in self.signposts.linksets:
-            print(linkset.target)
-            self.linksetSignposts = signposting.find_signposting_linkset(linkset.target) # linksetSignposts should be array
-            
+        if len(self.signposts.linksets) > 0:
+            print("linkset(s) found")
+            for linkset in self.signposts.linksets:
+                try: 
+                    self.linksetSignposts = signposting.find_signposting_linkset(linkset.target)
+                except:
+                    print(linkset.type)
+                else:
+                    self.signposts = signposting.Signposting(signposts = self.linksetSignposts.signposts)
+                    self.cite_as()
+                    self.items()
+                    self.author()
+                    self.licenses()
+                    self.types()
+                    self.collection()
+                    self.described_by()
+                    
 
-    
-    def described_by(self, links):
-        for link in links:
-            linkType = link.type # fix: links that have the wrong type declared
-            if link.type == None: # Some links have undefined types
-                linkType = util.guess_format(link.target)
-            if linkType in self.acceptedFormats:
-                RDFfile = link.target
+    def described_by(self):
+        for signpost in self.signposts.describedBy:
+            self.kg.add((URIRef(self.origin), self.ns.describedby, URIRef(signpost.target)))   
+
+            linkType = signpost.type # fix: links that have the wrong type declared
+            if signpost.type == None: # Some links have undefined types
+                linkType = util.guess_format(signpost.target)
+            if linkType in self.describedByFormats:
+                RDFfile = signpost.target
                 g = Graph().parse(RDFfile, format=linkType)
-                for sub, pred, obj in g:
-                    self.describedBy.add((sub, pred, obj))
+                self.graphs.append(g)
+                # for sub, pred, obj in g:
+                #     self.kg.add((sub, pred, obj))
             else:
                 print("Parser does not accept format: " + linkType)
-                
-    
+
     def cite_as(self):
         if self.signposts.citeAs != None:
             self.kg.add((URIRef(self.origin), self.ns.citeas, URIRef(self.signposts.citeAs.target))) 
@@ -95,4 +105,18 @@ class Crawler:
             self.urls.append(self.signposts.license.target) # verify that URI is URL
         else:
             print("No license link at " + self.origin)
+
+    def types(self):
+        for signpost in self.signposts.types:
+            self.kg.add((URIRef(self.origin), self.ns.types, URIRef(signpost.target)))
+
+    def collection(self):
+        if self.signposts.collection != None:
+            self.kg.add((URIRef(self.origin), self.ns.collection, URIRef(self.signposts.collection.target))) 
+            self.urls.append(self.signposts.collection.target) # verify that URI is URL using absoluteURI function
+        else:
+            print("No collection link at " + self.origin)
+
+    def test(self):
+        return [self.signposts, self.signposts.signposts, self.signposts.context, self.signposts.other_contexts]
             

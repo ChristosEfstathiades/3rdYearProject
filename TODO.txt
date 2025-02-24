@@ -1,16 +1,3 @@
-properties to look for:
-    linksets
-    describedBy
-    citeas - check if its a recognized persistant identifier
-    authors
-    items
-    licenses
-    collection
-
-
-
-
-
 seperate named graphs for websites that can be combined into knowledge graph 
 conneg - format, 
 profile - subsey of syntactic type, 
@@ -25,27 +12,3 @@ store graphs
 
 http://www.iana.org/assignments/relation/poop
 
-<!-- <p>----------------- Linkset elements ------------------</p>
-    {% for link in linkset.signposts %}
-    <p>{% print(link) %}</p>
-    {% endfor %}
-    <p>----------------- described by ------------------</p>
-    {% for d in s.describedBy %}
-    <p>{% print(d) %}</p>
-    {% endfor %}
-
-    <p>----------------- items ------------------</p>
-    {% for d in s.items %}
-    <p>{% print(d) %}</p>
-    {% endfor %}
-
-    <p>----------------- cite-as ------------------</p>
-    <p>{% print(s.citeAs) %}</p>
-
-    <p>----------------- Author(s) ------------------</p>
-    {% for d in s.authors %}
-    <p>{% print(d) %}</p>
-    {% endfor %}
-
-    <p>----------------- license ------------------</p>
-    <p>{% print(s.license) %}</p> -->
