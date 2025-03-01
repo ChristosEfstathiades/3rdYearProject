@@ -11,21 +11,8 @@
    
 
     {% for graph in graphs %}
-    <p>---------------- Signposts -------------------</p>
-    <table>
-        <tr>
-            <th>Subject</th>
-            <th>Predicate</th>
-            <th>Object</th>
-        </tr>
-        {% for s, p, o in graph %}
-        <tr>
-            <th>{% print(s) %}</th>
-            <th>{% print(p) %}</th>
-            <th>{% print(o) %}</th>
-        </tr>
-        {% endfor %}
-    </table>
+    {{graph.get_kg()}}
     {% endfor %}
+    
 </body>
 </html>

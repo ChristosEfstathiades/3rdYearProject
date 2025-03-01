@@ -1,14 +1,14 @@
 import signposting
 from rdflib import Graph, URIRef, util, RDF, Literal, Namespace
 from rdflib.namespace import FOAF
+from kg import KG
 class Crawler:
     def __init__(self, URI):
         self.origin = URI
         self.signposts = None
         self.describedByMetadata = Graph()
         self.describedByFormats = ["turtle", "application/ld+json", "text/turtle", "application/rdf+xml", "application/n-triples"] # application/json, application/xml
-        self.linksetFormats = ['application/linkset+json']
-        self.linksetSignposts = None
+        # self.linksetFormats = ['application/linkset+json']
         self.ns = Namespace("http://www.iana.org/assignments/relation/")
         self.graphs = []
         self.urls = [URI]#, "https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/"]
@@ -24,53 +24,93 @@ class Crawler:
                 print("error") # add to this
             else:
                 if len(self.signposts.signposts) > 0:
-                    self.kg = Graph()
                     self.origin = self.urls[i]
 
-                    # Stores level 1 typed links 
-                    self.cite_as()
-                    self.items()
-                    self.author()
-                    self.licenses()
-                    self.types()
-                    self.collection()
-                    self.described_by()
-                    if len(self.kg) > 0:
-                        self.graphs.append(self.kg)
+                    # Crawls level 1 typed links - HTTP
+                    signposts = self.collect_signposts(self.signposts)
+                    metadata = self.collect_metadata(self.signposts.describedBy)
+                    
+                    
+                    # Crawls level 2 typed links
+                    linksetData = self.linkset_handler(self.signposts.linksets)
 
-                    # Level 2 typed links
-                    self.kg = Graph() # temporary solution, maybe change handler functions to be more generalised
-                    self.linkset_handler()
-                    if len(self.kg) > 0:
-                        self.graphs.append(self.kg)
+                    graphData = KG(self.origin, signposts, metadata, linksets=linksetData)
+                    self.graphs.append(graphData)
+        print(len(self.graphs))
+                        
+                    
 
         
             
         
 
-    def linkset_handler(self):
-        if len(self.signposts.linksets) > 0:
+    def collect_signposts(self, signposts):
+        graph = Graph()
+        self.cite_as(signposts, graph)
+        self.items(signposts, graph)
+        self.author(signposts, graph)
+        self.licenses(signposts, graph)
+        self.types(signposts, graph)
+        self.collection(signposts, graph)
+        self.linksets(signposts, graph)
+        self.described_by(signposts, graph)
+        if len(graph) > 0:
+            return graph
+        else:
+            return None
+    
+    def collect_metadata(self, describedByLinks):
+        if (len(describedByLinks) > 0):
+            metadata = {}
+            for link in describedByLinks:
+                linkType = link.type # fix: links that have the wrong type declared
+                if link.type == None: # Some links have undefined types
+                    linkType = util.guess_format(link.target)
+                if linkType in self.describedByFormats:
+                    RDFfile = link.target
+                    graph = Graph().parse(RDFfile, format=linkType)
+                    metadata[link.target] = graph
+                else:
+                    print("Parser does not accept format: " + linkType)
+            return metadata
+        else:
+            return None
+
+
+    def linkset_handler(self, linksets):
+        if len(linksets) > 0:
+            linksetData = {}
             print("linkset(s) found")
-            for linkset in self.signposts.linksets:
+            for linkset in linksets:
                 try: 
-                    self.linksetSignposts = signposting.find_signposting_linkset(linkset.target)
+                    linksetSignposts = signposting.find_signposting_linkset(linkset.target)
                 except:
                     print(linkset.type)
                 else:
-                    self.signposts = signposting.Signposting(signposts = self.linksetSignposts.signposts)
-                    self.cite_as()
-                    self.items()
-                    self.author()
-                    self.licenses()
-                    self.types()
-                    self.collection()
-                    self.described_by()
+                    sortedSignposts = signposting.Signposting(signposts = linksetSignposts.signposts)
+                    signposts = self.collect_signposts(sortedSignposts)
+                    metadata = self.collect_metadata(sortedSignposts.describedBy)
+                    linksetData[linkset.target] = {
+                        'signposts': signposts,
+                        'metadata': metadata
+                    }
+            return linksetData
+        else:
+            return None
                     
 
-    def described_by(self):
-        for signpost in self.signposts.describedBy:
-            self.kg.add((URIRef(self.origin), self.ns.describedby, URIRef(signpost.target)))   
+    def linksets(self, signposts, graph):
+        for linkset in signposts.linksets:
+            graph.add((URIRef(self.origin), self.ns.linkset, URIRef(linkset.target)))
+    
+    def described_by(self, signposts, graph):
+        for signpost in signposts.describedBy:
+            graph.add((URIRef(self.origin), self.ns.types, URIRef(signpost.target)))
+        
 
+    def described_by_linksets(self, linkset):
+        for signpost in self.signposts.describedBy:
+            self.kg.add((URIRef(self.origin), self.ns.describedby, URIRef(signpost.target)))  
             linkType = signpost.type # fix: links that have the wrong type declared
             if signpost.type == None: # Some links have undefined types
                 linkType = util.guess_format(signpost.target)
@@ -78,42 +118,43 @@ class Crawler:
                 RDFfile = signpost.target
                 g = Graph().parse(RDFfile, format=linkType)
                 self.graphs.append(g)
+                
                 # for sub, pred, obj in g:
                 #     self.kg.add((sub, pred, obj))
             else:
                 print("Parser does not accept format: " + linkType)
 
-    def cite_as(self):
-        if self.signposts.citeAs != None:
-            self.kg.add((URIRef(self.origin), self.ns.citeas, URIRef(self.signposts.citeAs.target))) 
+    def cite_as(self, signposts, graph):
+        if signposts.citeAs != None:
+            graph.add((URIRef(self.origin), self.ns.citeas, URIRef(signposts.citeAs.target))) # change self.origin
         else:
             print("No cite-as link at " + self.origin)
 
-    def items(self):
-        for signpost in self.signposts.items:
-            self.kg.add((URIRef(self.origin), self.ns.item, URIRef(signpost.target))) 
+    def items(self, signposts, graph):
+        for signpost in signposts.items:
+            graph.add((URIRef(self.origin), self.ns.item, URIRef(signpost.target))) 
         
 
-    def author(self):
-        for signpost in self.signposts.authors:
-            self.kg.add((URIRef(self.origin), self.ns.author, URIRef(signpost.target))) 
+    def author(self, signposts, graph):
+        for signpost in signposts.authors:
+            graph.add((URIRef(self.origin), self.ns.author, URIRef(signpost.target))) 
             self.urls.append(signpost.target) # verify that URI is URL
         
-    def licenses(self):
-        if self.signposts.license != None:
-            self.kg.add((URIRef(self.origin), self.ns.license, URIRef(self.signposts.license.target))) 
-            self.urls.append(self.signposts.license.target) # verify that URI is URL
+    def licenses(self, signposts, graph):
+        if signposts.license != None:
+            graph.add((URIRef(self.origin), self.ns.license, URIRef(signposts.license.target))) 
+            self.urls.append(signposts.license.target) # verify that URI is URL
         else:
             print("No license link at " + self.origin)
 
-    def types(self):
-        for signpost in self.signposts.types:
-            self.kg.add((URIRef(self.origin), self.ns.types, URIRef(signpost.target)))
+    def types(self, signposts, graph):
+        for signpost in signposts.types:
+            graph.add((URIRef(self.origin), self.ns.types, URIRef(signpost.target)))
 
-    def collection(self):
-        if self.signposts.collection != None:
-            self.kg.add((URIRef(self.origin), self.ns.collection, URIRef(self.signposts.collection.target))) 
-            self.urls.append(self.signposts.collection.target) # verify that URI is URL using absoluteURI function
+    def collection(self, signposts, graph):
+        if signposts.collection != None:
+            graph.add((URIRef(self.origin), self.ns.collection, URIRef(signposts.collection.target))) 
+            self.urls.append(signposts.collection.target) # verify that URI is URL using absoluteURI function
         else:
             print("No collection link at " + self.origin)
 
