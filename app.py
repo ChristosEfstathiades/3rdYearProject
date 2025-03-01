@@ -20,15 +20,15 @@ def crawl():
 
         crawled = Crawler(url)
         crawled.crawl()
-        data = crawled.test()
+        
         
         graphs = crawled.graphs
 
-        graphs[0].serialize(format="xml", destination="./RDF/describedBy.rdf")
+        # graphs[0].serialize(format="xml", destination="./RDF/describedBy.rdf")
 
        
         
-        return render_template('crawled.html', graphs = graphs, data = data)
+        return render_template('crawled.html', graphs = graphs)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5555, debug=True)

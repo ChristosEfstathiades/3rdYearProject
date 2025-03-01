@@ -15,6 +15,10 @@ FAIR  evaluation
 ideas:
 maybe change describedby subjects to the describedby targets 
 
+graph visualization:
+pyvis
+cytoscape
+
 possible heiristics:
 described by links
 predicates
@@ -23,4 +27,6 @@ HTML
 notes:
 MIME = application/etc..
 profile attribute is standardized for certain MIME types, such as application/ld+json
+
+
 

@@ -5,10 +5,39 @@ vnd - own profile
 
 
 
-crawling websites
-use rdflib to create graphs 
-use namespaces for predicate
-store graphs
+{
+    'provenance': 'https:\\example.com'
+    'signposts': Graph()
+    'linksets': {
+        'linkset.target': {
+            'signposts': Graph()
+            'metadata': {
+                'describedby.target': Graph(),
+                ...
+            }
+        }
+        ...
+    }
+    'metadata': {
+        'describedby.target': Graph(),
+        ...
+    }
+}
 
-http://www.iana.org/assignments/relation/poop
-
+{% for graph in graphs %}
+    <p>---------------- Signposts -------------------</p>
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Predicate</th>
+            <th>Object</th>
+        </tr>
+        {% for s, p, o in graph %}
+        <tr>
+            <th>{% print(s) %}</th>
+            <th>{% print(p) %}</th>
+            <th>{% print(o) %}</th>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endfor %}
