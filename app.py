@@ -28,7 +28,7 @@ def crawl():
         # graphs[0].serialize(format="xml", destination="./RDF/describedBy.rdf")
 
        
-        if not debug:
+        if debug:
             return render_template('debug.html', graphs = graphs)
         else:
             return render_template('crawled.html', graphs = graphs)

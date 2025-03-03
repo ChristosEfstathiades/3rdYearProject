@@ -1,3 +1,11 @@
 table, th, td {
     border:1px solid black;
   }
+
+#cy {
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+  display: block;
+  
+}
