@@ -5,14 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/css/global.css">
     <link rel="stylesheet" type="text/css" href="/static/css/crawled.css">
+    <script src="/static/js/cytoscape.min.js"></script>
     <title>Results</title>
 </head>
 <body>
-   
-
-    {% for graph in graphs %}
-    {{graph}}
-    {% endfor %}
+    <div id="cy">
+        
+    </div>
     
+     <script>
+        let origin = '{{ graphs[0].provenance }}'
+        console.log(origin);
+        signposts = []
+        count = 1
+        {% for s, p, o in graphs[0].signposts %}
+            signposts.push(
+                {group: 'nodes', data: {id: '{{o}}'}, position: {x: 100 * count, y: 100*count}, label: '' },
+                {group: 'edges', data: {id: count, source: '{{s}}', target: '{{o}}'}, label: '{{p}}'}
+            )
+            count++
+        {% endfor %}
+
+
+        console.log(signposts)
+        
+        var cy = cytoscape({
+            container: document.getElementById('cy'),
+
+            elements: {
+                nodes: [
+                {
+                    data: { id: origin }
+                }
+                ]
+            },
+
+            layout: {
+                name: 'grid',
+                rows: 1
+            },
+
+            // so we can see the ids
+            style: [
+                {
+                selector: 'node',
+                style: {
+                    'label': 'data(id)'
+                }
+                },
+                {
+                selector: 'edge',
+                style: {
+                    'label': 'data(label)'
+                }
+                }
+            ]
+        });
+        cy.add(signposts)
+     </script>
 </body>
 </html>
