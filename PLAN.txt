@@ -12,14 +12,16 @@ linked data embedded in HTML
 FAIR  evaluation
 
 
-ideas:
-maybe change describedby subjects to the describedby targets 
 
 graph visualization:
 pyvis
 cytoscape
 TBD from Apache Jena
 stardog?
+
+graphs
+apache Jena - documentation
+
 
 possible heiristics:
 described by links

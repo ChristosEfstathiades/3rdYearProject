@@ -23,7 +23,7 @@ class Crawler:
             try:
                 self.signposts = signposting.find_signposting_http(url) 
             except:
-                print("Error: No http signposting found") # add to this
+                print("Error: No http signposting found") # add to this (return error page)
             else:
                 if len(self.signposts.signposts) > 0:
                     self.origin = url
@@ -61,13 +61,17 @@ class Crawler:
         if (len(describedByLinks) > 0):
             metadata = {}
             for link in describedByLinks:
-                linkType = link.type # fix: links that have the wrong type declared
+                linkType = link.type # fix: links that have the wrong type declared - https://s11.no/2022/a2a-fair-metrics/11-http-describedby-iri-wrong-type/
                 if link.type == None: # Some links have undefined types
                     linkType = util.guess_format(link.target)
                 if linkType in self.describedByFormats:
                     RDFfile = link.target
-                    graph = Graph().parse(RDFfile, format=linkType)
-                    metadata[link.target] = graph
+                    try:
+                        graph = Graph().parse(RDFfile, format=linkType)
+                    except:
+                        print("Failed to parse metadata") # content neg? https://s11.no/2022/a2a-fair-metrics/16-http-describedby-conneg/
+                    else:
+                        metadata[link.target] = graph
                 else:
                     print("Parser does not accept format: " + linkType)
             return metadata
@@ -103,7 +107,6 @@ class Crawler:
     
     def described_by(self, signposts, graph):
         for signpost in signposts.describedBy:
-            print(signpost)
             graph.add((URIRef(self.origin), self.ns.describedby, URIRef(signpost.target)))
 
     def cite_as(self, signposts, graph):
