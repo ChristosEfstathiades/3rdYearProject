@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/css/global.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/crawled.css">
+    <title>Results</title>
+</head>
+<body>
+   
+
+    {% for graph in graphs %}
+        <p>Provenance: {{graph.provenance}}</p>
+        <p>Signposts: </p>
+        <p>---------------- Signposts -------------------</p>
+        <table>
+            <tr>
+                <th>Subject</th>
+                <th>Predicate</th>
+                <th>Object</th>
+            </tr>
+            {% for s, p, o in graph.signposts %}
+            <tr>
+                <th>{% print(s) %}</th>
+                <th>{% print(p) %}</th>
+                <th>{% print(o) %}</th>
+            </tr>
+            {% endfor %}
+        </table>
+        <p>---------------- Metadata -------------------</p>
+        {% for link in graph.metadata %}
+        <p>Link: {{link}}</p>
+        <table>
+            <tr>
+                <th>Subject</th>
+                <th>Predicate</th>
+                <th>Object</th>
+            </tr>
+            {% for s, p, o in graph.metadata[link] %}
+            <tr>
+                <th>{% print(s) %}</th>
+                <th>{% print(p) %}</th>
+                <th>{% print(o) %}</th>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endfor %}
+        <p>---------------- Linksets -------------------</p>
+        {% for link in graph.linksets %}
+        <p>Link: {{link}}</p>
+        <p>Linkset signposts:</p>
+        <table>
+            <tr>
+                <th>Subject</th>
+                <th>Predicate</th>
+                <th>Object</th>
+            </tr>
+            {% for s, p, o in graph.linksets[link].signposts %}
+            <tr>
+                <th>{% print(s) %}</th>
+                <th>{% print(p) %}</th>
+                <th>{% print(o) %}</th>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endfor %}
+    {% endfor %}
+    
+</body>
+</html>

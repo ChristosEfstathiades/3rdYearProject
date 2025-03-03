@@ -1,4 +1,3 @@
-seperate named graphs for websites that can be combined into knowledge graph 
 conneg - format, 
 profile - subsey of syntactic type, 
 vnd - own profile
@@ -24,20 +23,3 @@ vnd - own profile
     }
 }
 
-{% for graph in graphs %}
-    <p>---------------- Signposts -------------------</p>
-    <table>
-        <tr>
-            <th>Subject</th>
-            <th>Predicate</th>
-            <th>Object</th>
-        </tr>
-        {% for s, p, o in graph %}
-        <tr>
-            <th>{% print(s) %}</th>
-            <th>{% print(p) %}</th>
-            <th>{% print(o) %}</th>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endfor %}

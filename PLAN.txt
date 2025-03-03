@@ -18,6 +18,8 @@ maybe change describedby subjects to the describedby targets
 graph visualization:
 pyvis
 cytoscape
+TBD from Apache Jena
+stardog?
 
 possible heiristics:
 described by links

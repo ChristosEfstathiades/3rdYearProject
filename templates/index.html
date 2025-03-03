@@ -12,6 +12,10 @@
         <h1>Submit URL</h1>
         <form action="{{ url_for('crawl') }}" method="POST">
             <input id="urlInput" type="text" name="url" placeholder="https://example.org">
+            <div>
+                <input type="checkbox" name="debug" id="debug">
+                <label for="debug">Debug</label>
+            </div>
             <input type="submit" value="Submit">
         </form>
     </main>
