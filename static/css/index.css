@@ -7,3 +7,14 @@ main {
 #urlInput {
     width: 500px;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+form > * {
+    margin: 10px 0;
+}

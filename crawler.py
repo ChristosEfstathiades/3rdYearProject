@@ -12,19 +12,21 @@ class Crawler:
         self.ns = Namespace("http://www.iana.org/assignments/relation/")
         self.graphs = []
         self.urls = [URI]#, "https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/"]
+        self.depthLimit = 10
+        self.visited = {URI}
 
     def crawl(self):
-        for i in range(5): # TBC
-            if len(self.urls) <= i:
+        counter = 0
+        for url in self.urls: # TBC
+            if counter > self.depthLimit:
                 break
-            # print(self.urls[i])
             try:
-                self.signposts = signposting.find_signposting_http(self.urls[i]) 
+                self.signposts = signposting.find_signposting_http(url) 
             except:
-                print("error") # add to this
+                print("Error: No http signposting found") # add to this
             else:
                 if len(self.signposts.signposts) > 0:
-                    self.origin = self.urls[i]
+                    self.origin = url
 
                     # Crawls level 1 typed links - HTTP
                     signposts = self.collect_signposts(self.signposts)
@@ -35,13 +37,9 @@ class Crawler:
                     linksetData = self.linkset_handler(self.signposts.linksets)
 
                     graphData = KG(self.origin, signposts, metadata, linksets=linksetData)
-                    self.graphs.append(graphData)
-        print(len(self.graphs))
-                        
-                    
-
-        
-            
+                    self.graphs.append(graphData.get_kg())
+            counter += 1
+            self.visited.add(url)        
         
 
     def collect_signposts(self, signposts):
@@ -74,7 +72,7 @@ class Crawler:
                     print("Parser does not accept format: " + linkType)
             return metadata
         else:
-            return None
+            return {}
 
 
     def linkset_handler(self, linksets):
@@ -96,7 +94,7 @@ class Crawler:
                     }
             return linksetData
         else:
-            return None
+            return {}
                     
 
     def linksets(self, signposts, graph):
@@ -105,24 +103,8 @@ class Crawler:
     
     def described_by(self, signposts, graph):
         for signpost in signposts.describedBy:
-            graph.add((URIRef(self.origin), self.ns.types, URIRef(signpost.target)))
-        
-
-    def described_by_linksets(self, linkset):
-        for signpost in self.signposts.describedBy:
-            self.kg.add((URIRef(self.origin), self.ns.describedby, URIRef(signpost.target)))  
-            linkType = signpost.type # fix: links that have the wrong type declared
-            if signpost.type == None: # Some links have undefined types
-                linkType = util.guess_format(signpost.target)
-            if linkType in self.describedByFormats:
-                RDFfile = signpost.target
-                g = Graph().parse(RDFfile, format=linkType)
-                self.graphs.append(g)
-                
-                # for sub, pred, obj in g:
-                #     self.kg.add((sub, pred, obj))
-            else:
-                print("Parser does not accept format: " + linkType)
+            print(signpost)
+            graph.add((URIRef(self.origin), self.ns.describedby, URIRef(signpost.target)))
 
     def cite_as(self, signposts, graph):
         if signposts.citeAs != None:
@@ -138,12 +120,12 @@ class Crawler:
     def author(self, signposts, graph):
         for signpost in signposts.authors:
             graph.add((URIRef(self.origin), self.ns.author, URIRef(signpost.target))) 
-            self.urls.append(signpost.target) # verify that URI is URL
+            self.addURL(signpost.target) # verify that URI is URL
         
     def licenses(self, signposts, graph):
         if signposts.license != None:
             graph.add((URIRef(self.origin), self.ns.license, URIRef(signposts.license.target))) 
-            self.urls.append(signposts.license.target) # verify that URI is URL
+            self.addURL(signposts.license.target) # verify that URI is URL
         else:
             print("No license link at " + self.origin)
 
@@ -154,9 +136,14 @@ class Crawler:
     def collection(self, signposts, graph):
         if signposts.collection != None:
             graph.add((URIRef(self.origin), self.ns.collection, URIRef(signposts.collection.target))) 
-            self.urls.append(signposts.collection.target) # verify that URI is URL using absoluteURI function
+            self.addURL(signposts.collection.target) # verify that URI is URL using absoluteURI function
         else:
             print("No collection link at " + self.origin)
+
+    def addURL(self, url):
+        if url not in self.visited:
+            self.urls.append(url)
+            self.visited.add(url)
 
     def test(self):
         return [self.signposts, self.signposts.signposts, self.signposts.context, self.signposts.other_contexts]

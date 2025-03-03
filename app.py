@@ -15,6 +15,7 @@ def greet(name):
 def crawl():
     if request.method == 'POST':
         url = request.form.get('url')
+        debug = request.form.get('debug')
 
         # https://doi.org/10.34894/SRSB8I
 
@@ -27,8 +28,11 @@ def crawl():
         # graphs[0].serialize(format="xml", destination="./RDF/describedBy.rdf")
 
        
-        
-        return render_template('crawled.html', graphs = graphs)
+        if not debug:
+            return render_template('debug.html', graphs = graphs)
+        else:
+            return render_template('crawled.html', graphs = graphs)
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5555, debug=True)
