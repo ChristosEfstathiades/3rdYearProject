@@ -49,7 +49,7 @@ class Crawler:
         self.author(signposts, graph)
         self.licenses(signposts, graph)
         self.types(signposts, graph)
-        self.collection(signposts, graph)
+        # self.collection(signposts, graph)
         self.linksets(signposts, graph)
         self.described_by(signposts, graph)
         if len(graph) > 0:
