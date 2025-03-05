@@ -134,7 +134,7 @@ class Crawler:
 
     def types(self, signposts, graph):
         for signpost in signposts.types:
-            graph.add((URIRef(self.origin), self.ns.types, URIRef(signpost.target)))
+            graph.add((URIRef(self.origin), self.ns.type, URIRef(signpost.target)))
 
     def collection(self, signposts, graph):
         if signposts.collection != None:

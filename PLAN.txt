@@ -11,13 +11,22 @@ additional features:
 linked data embedded in HTML
 FAIR  evaluation
 
+reevaluate project requirments
 
+knowledge graphs:
+data structure?
 
 graph visualization:
-pyvis
-cytoscape
-TBD from Apache Jena
-stardog?
+colour code labels
+click to expand linksets and described by (ignore non parsed metadata links)
+
+storing graphs:
+RDF OR JSON or fuseki
+
+querying the data:
+RDFlib or apache jena fuseki endpoints
+embedding fuseki
+"what can you do with apache jena fuseki"
 
 graphs
 apache Jena - documentation
