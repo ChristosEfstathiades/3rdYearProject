@@ -1,7 +1,3 @@
-conneg - format, 
-profile - subsey of syntactic type, 
-vnd - own profile
-
 
 
 {

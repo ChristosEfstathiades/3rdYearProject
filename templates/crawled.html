@@ -19,9 +19,11 @@
         signposts = []
         count = 1
         {% for s, p, o in graphs[0].signposts %}
+            predicate = '{{p}}'
+            predicate = predicate.split('/').pop();
             signposts.push(
-                {group: 'nodes', data: {id: '{{o}}'}, position: {x: 100 * count, y: 100*count}, label: '' },
-                {group: 'edges', data: {id: count, source: '{{s}}', target: '{{o}}'}, label: '{{p}}'}
+                {group: 'nodes', data: {id: '{{o}}'}, position: {x: 0, y: 100*count} },
+                {group: 'edges', data: {id: count, source: '{{s}}', target: '{{o}}', label: predicate } }
             )
             count++
         {% endfor %}
@@ -56,12 +58,50 @@
                 {
                 selector: 'edge',
                 style: {
-                    'label': 'data(label)'
+                    'label': 'data(label)',
+                    'text-margin-y': -20
                 }
                 }
             ]
         });
         cy.add(signposts)
+        cy.edges().forEach(edge => {
+            colour = colourCode(edge.data('label'))
+            edge.style('line-color', colour);
+        });
+
+        function colourCode(predicate) 
+        {
+            switch (predicate)
+            {
+                case "citeas":
+                    return "blue";
+                    break;
+                case "item":
+                    return "red";
+                    break;
+                case "describedby":
+                    return "green";
+                    break;
+                case "license":
+                    return "orange";
+                    break;
+                case "type":
+                    return "yellow";
+                    break;
+                case "linkset":
+                    return "purple";
+                    break;
+                case "author":
+                    return "brown";
+                    break;
+                case "collection":
+                    return "pink";
+                    break;
+                default:
+                    return "black"
+            }
+        }
      </script>
 </body>
 </html>
