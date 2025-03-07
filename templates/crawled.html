@@ -14,34 +14,39 @@
     </div>
     
      <script>
-        // for graph in graphs
-        // 
 
 
 
         let origin = '{{ graphs[0].provenance }}'
         let signposts = []
-        {% for s, p, o in graphs[0].signposts %}
-            predicate = '{{p}}'
-            predicate = predicate.split('/').pop();
-            signposts.push(
-                {group: 'nodes', data: {id: '{{o}}'} },
-                {group: 'edges', data: {source: '{{s}}', target: '{{o}}', label: predicate } }//id: count, 
-            )
-        {% endfor %}
-        {% for link in graphs[0].linksets %}
-            linkset = '{{link}}'
-            console.log(linkset)
-            {% for s, p, o in graphs[0].linksets[link].signposts %}
+        {% for graph in graphs%}
+            {% for s, p, o in graph.signposts %}
                 predicate = '{{p}}'
                 predicate = predicate.split('/').pop();
                 signposts.push(
-                    {group: 'nodes', data: {id: '{{o}}'} },
-                    {group: 'edges', data: {source: linkset, target: '{{o}}', label: predicate } }//id: count, 
+                    {group: 'nodes', data: {id: '{{o}}', label: predicate} },
+                    {group: 'edges', data: {source: '{{s}}', target: '{{o}}'} }//id: count, label: predicate
                 )
+            {% endfor %}
+            {% for link in graph.linksets %}
+                linkset = '{{link}}'
+                console.log(linkset)
+                {% for s, p, o in graphs[0].linksets[link].signposts %}
+                    predicate = '{{p}}'
+                    predicate = predicate.split('/').pop();
+                    signposts.push(
+                        {group: 'nodes', data: {id: '{{o}}', label: predicate} },
+                        {group: 'edges', data: {source: linkset, target: '{{o}}'} }//id: count, label: predicate
+                    )
+                {% endfor %}
             {% endfor %}
         {% endfor %}
 
+        // for testing
+        {# signposts.push(
+            {group: 'nodes', data: {id: 'https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/'} },
+            {group: 'edges', data: {source: 'https://s11.no/2022/a2a-fair-metrics/06-http-citeas-describedby-item/test-apple-data.csv', target: 'https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/'} }//id: count, label: predicate
+        ) #}
 
         console.log(signposts)
         
@@ -56,26 +61,23 @@
                 ]
             },
 
-           // layout: {
-           //     name: 'grid',
-           //     rows: 1
-           // },
-
             // so we can see the ids
             style: [
                 {
                 selector: 'node',
                 style: {
                     'label': 'data(id)', // Use node's 'label' property
-                    //'text-valign': 'center', // Center vertically
-                    //'text-halign': 'center', // Center horizontall
-                    'background-color': 'white'
+                    'text-valign': 'center', // Center vertically
+                    'text-halign': 'center', // Center horizontall
+                    'background-color': 'white',
+                    //'width': 60,
+                    //'height': 60
                 }
                 },
                 {
                 selector: 'edge',
                 style: {
-                    'label': 'data(label)',
+                    //'label': 'data(label)',
                     //'text-margin-y': -20,
                     'target-arrow-shape': 'triangle', // Arrow at target node
                     'target-arrow-color': 'black',    // Match edge color
@@ -92,9 +94,9 @@
           
         layout.run();
 
-        cy.edges().forEach(edge => {
-            colour = colourCode(edge.data('label'))
-            edge.style('line-color', colour);
+        cy.nodes().forEach(node => {
+            colour = colourCode(node.data('label'))
+            node.style('background-color', colour);
         });
 
         function colourCode(predicate) 
