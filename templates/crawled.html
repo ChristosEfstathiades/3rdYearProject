@@ -14,21 +14,21 @@
     </div>
     
      <script>
+        // for graph in graphs
+        // 
+
+
+
         let origin = '{{ graphs[0].provenance }}'
         let signposts = []
-        let pos = 0
-        let count = 1
         {% for s, p, o in graphs[0].signposts %}
             predicate = '{{p}}'
             predicate = predicate.split('/').pop();
             signposts.push(
-                {group: 'nodes', data: {id: '{{o}}'}, position: {x: 0, y: 100*pos} },
-                {group: 'edges', data: {id: count, source: '{{s}}', target: '{{o}}', label: predicate } }
+                {group: 'nodes', data: {id: '{{o}}'} },
+                {group: 'edges', data: {source: '{{s}}', target: '{{o}}', label: predicate } }//id: count, 
             )
-            count++
-            pos++
         {% endfor %}
-        pos = 0
         {% for link in graphs[0].linksets %}
             linkset = '{{link}}'
             console.log(linkset)
@@ -36,11 +36,9 @@
                 predicate = '{{p}}'
                 predicate = predicate.split('/').pop();
                 signposts.push(
-                    {group: 'nodes', data: {id: '{{o}}'}, position: {x: -100, y: 100*pos} },
-                    {group: 'edges', data: {id: count, source: linkset, target: '{{o}}', label: predicate } }
+                    {group: 'nodes', data: {id: '{{o}}'} },
+                    {group: 'edges', data: {source: linkset, target: '{{o}}', label: predicate } }//id: count, 
                 )
-                count++
-                pos++
             {% endfor %}
         {% endfor %}
 
@@ -58,24 +56,27 @@
                 ]
             },
 
-            layout: {
-                name: 'grid',
-                rows: 1
-            },
+           // layout: {
+           //     name: 'grid',
+           //     rows: 1
+           // },
 
             // so we can see the ids
             style: [
                 {
                 selector: 'node',
                 style: {
-                    'label': 'data(id)'
+                    'label': 'data(id)', // Use node's 'label' property
+                    //'text-valign': 'center', // Center vertically
+                    //'text-halign': 'center', // Center horizontall
+                    'background-color': 'white'
                 }
                 },
                 {
                 selector: 'edge',
                 style: {
                     'label': 'data(label)',
-                    'text-margin-y': -20,
+                    //'text-margin-y': -20,
                     'target-arrow-shape': 'triangle', // Arrow at target node
                     'target-arrow-color': 'black',    // Match edge color
                     'curve-style': 'bezier'
@@ -84,6 +85,13 @@
             ]
         });
         cy.add(signposts)
+
+        var layout = cy.elements().layout({
+            name: 'circle'
+          });
+          
+        layout.run();
+
         cy.edges().forEach(edge => {
             colour = colourCode(edge.data('label'))
             edge.style('line-color', colour);

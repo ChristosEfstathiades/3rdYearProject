@@ -24,6 +24,8 @@ def crawl():
         
         
         graphs = crawled.graphs
+        print(len(graphs))
+        # TODO Return error message when graphs is empty
 
         # graphs[0].serialize(format="xml", destination="./RDF/describedBy.rdf")
 
