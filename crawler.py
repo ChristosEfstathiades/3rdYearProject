@@ -8,7 +8,6 @@ class Crawler:
         self.signposts = None
         self.describedByMetadata = Graph()
         self.describedByFormats = ["turtle", "application/ld+json", "text/turtle", "application/rdf+xml", "application/n-triples"] # application/json, application/xml
-        # self.linksetFormats = ['application/linkset+json']
         self.ns = Namespace("http://www.iana.org/assignments/relation/")
         self.graphs = []
         self.urls = [URI]#, "https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/"]
@@ -17,14 +16,13 @@ class Crawler:
 
     def crawl(self):
         counter = 0
-        for url in self.urls: # TBC
+        for url in self.urls: 
             if counter > self.depthLimit:
                 break
             try:
                 self.signposts = signposting.find_signposting_http(url) 
             except:
                 print("Error: No HTTP signposting found")
-                # TODO: HTML signposting might need to relocate html code hmmm
                 self.crawl_html(url)
             else:
                 if len(self.signposts.signposts) > 0:
