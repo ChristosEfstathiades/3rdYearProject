@@ -1,24 +1,23 @@
 requirements
-incrementally follow signposting to retrieve linked data
-load into knowledge graph
-execute explorative queries on the linked data
-select which resources to follow next 
-allow for heuristic fallback when no signposting available
-logic that dertermines when to stop crawl and how to select sources of interest
-deposit knowledge graph with associated provenance/origin
+
 
 additional features:
 linked data embedded in HTML
-FAIR  evaluation
 
 reevaluate project requirments
+go through blackboard course
 
 knowledge graphs:
 data structure?
 
 graph visualization:
-colour code labels
 click to expand linksets and described by (ignore non parsed metadata links)
+give option to collapse all linked data to one graph
+decide on main way to represent the data:
+    union all redundant data from linksets, http, HTML
+    display everything
+    click to expand
+    
 
 storing graphs:
 RDF OR JSON or fuseki

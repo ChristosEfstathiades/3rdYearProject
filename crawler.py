@@ -23,23 +23,41 @@ class Crawler:
             try:
                 self.signposts = signposting.find_signposting_http(url) 
             except:
-                print("Error: No http signposting found") # add to this (return error page)
+                print("Error: No HTTP signposting found")
+                # TODO: HTML signposting might need to relocate html code hmmm
+                self.crawl_html(url)
             else:
                 if len(self.signposts.signposts) > 0:
-                    self.origin = url
-
-                    # Crawls level 1 typed links - HTTP
-                    signposts = self.collect_signposts(self.signposts)
-                    metadata = self.collect_metadata(self.signposts.describedBy)
-                    
-                    
-                    # Crawls level 2 typed links
-                    linksetData = self.linkset_handler(self.signposts.linksets)
-
-                    graphData = KG(self.origin, signposts, metadata, linksets=linksetData)
-                    self.graphs.append(graphData.get_kg())
+                    self.collect(url)
+                else:
+                    self.crawl_html(url)
             counter += 1
-            self.visited.add(url)        
+            self.visited.add(url)    
+
+    def crawl_html(self, url): # TODO https://edp-portal.eurac.edu/discovery/b7db0a55-31ac-4339-bf60-a6124fb45915 has both http and html signposting that differ sooooo
+        try:
+            self.signposts = signposting.find_signposting_html(url)
+        except:
+            print("Error: No HTML signposting found") 
+            # TODO: create error response 
+        else:
+            if len(self.signposts.signposts) > 0:
+                print("html signposting found")
+                self.collect(url)
+
+    def collect(self, url):
+        self.origin = url
+
+        # Crawls level 1 typed links - HTTP
+        signposts = self.collect_signposts(self.signposts)
+        metadata = self.collect_metadata(self.signposts.describedBy)
+        
+        
+        # Crawls level 2 typed links
+        linksetData = self.linkset_handler(self.signposts.linksets)
+
+        graphData = KG(self.origin, signposts, metadata, linksets=linksetData)
+        self.graphs.append(graphData.get_kg())
         
 
     def collect_signposts(self, signposts):
@@ -87,7 +105,8 @@ class Crawler:
                 try: 
                     linksetSignposts = signposting.find_signposting_linkset(linkset.target)
                 except:
-                    print(linkset.type)
+                    print("Couldn't parse linkset of type " + linkset.type)
+                    # TODO some linksets arent getting parsed that should likely due to some profile stuff (application/linkset, application/linket+json) compare ones that work to ones that don't - whats the difference
                 else:
                     sortedSignposts = signposting.Signposting(signposts = linksetSignposts.signposts)
                     signposts = self.collect_signposts(sortedSignposts)
