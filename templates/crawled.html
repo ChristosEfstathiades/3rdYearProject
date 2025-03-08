@@ -9,9 +9,47 @@
     <title>Results</title>
 </head>
 <body>
-    <div id="cy">
-        
-    </div>
+    <main id="main">
+        <div id="cy">
+            
+        </div>
+        <div id="menu">
+            <div id="keycodes">
+                <div class="item">
+                    <div class="key" style="background-color: brown;"></div>
+                    <span>author</span>
+                </div>
+                <div class="item">
+                    <div class="key" style="background-color: blue;"></div>
+                    <span>cite-as</span>
+                </div>
+                <div class="item">
+                    <div class="key" style="background-color: green;"></div>
+                    <span>describedby</span>
+                </div>
+                <div class="item">
+                    <div class="key" style="background-color: yellow;"></div>
+                    <span>type</span>
+                </div>
+                <div class="item">
+                    <div class="key" style="background-color: orange;"></div>
+                    <span>license</span>
+                </div>
+                <div class="item">
+                    <div class="key" style="background-color: red;"></div>
+                    <span>item</span>
+                </div>
+                <div class="item">
+                    <div class="key" style="background-color: pink;"></div>
+                    <span>collection</span>
+                </div>
+                <div class="item">
+                    <div class="key" style="background-color: purple;"></div>
+                    <span>linkset</span>
+                </div>
+            </div>
+        </div>
+    </main>
     
      <script>
 
@@ -28,7 +66,7 @@
                     {group: 'edges', data: {source: '{{s}}', target: '{{o}}'} }//id: count, label: predicate
                 )
             {% endfor %}
-            {% for link in graph.linksets %}
+            {# {% for link in graph.linksets %}
                 linkset = '{{link}}'
                 console.log(linkset)
                 {% for s, p, o in graphs[0].linksets[link].signposts %}
@@ -39,7 +77,7 @@
                         {group: 'edges', data: {source: linkset, target: '{{o}}'} }//id: count, label: predicate
                     )
                 {% endfor %}
-            {% endfor %}
+            {% endfor %} #}
         {% endfor %}
 
         // for testing
@@ -67,11 +105,12 @@
                 selector: 'node',
                 style: {
                     'label': 'data(id)', // Use node's 'label' property
-                    'text-valign': 'center', // Center vertically
-                    'text-halign': 'center', // Center horizontall
+                    //'text-valign': 'center', // Center vertically
+                    //'text-halign': 'center', // Center horizontall
                     'background-color': 'white',
-                    //'width': 60,
-                    //'height': 60
+                    'width': 45,
+                    'height': 45,
+                    'color': 'white'
                 }
                 },
                 {
