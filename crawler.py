@@ -128,7 +128,7 @@ class Crawler:
 
     def cite_as(self, signposts, graph):
         if signposts.citeAs != None:
-            graph.add((URIRef(self.origin), self.ns.citeas, URIRef(signposts.citeAs.target))) # change self.origin
+            graph.add((URIRef(self.origin), self.ns.citeas, URIRef(signposts.citeAs.target))) # TODO: change self.origin
         else:
             print("No cite-as link at " + self.origin)
 

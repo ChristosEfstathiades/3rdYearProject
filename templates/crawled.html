@@ -16,7 +16,7 @@
         <div id="menu">
             <div id="keycodes">
                 <div class="item">
-                    <div class="key" style="background-color: brown;"></div>
+                    <div class="key" style="background-color: turquoise;"></div>
                     <span>author</span>
                 </div>
                 <div class="item">
@@ -82,7 +82,7 @@
 
         // for testing
         {# signposts.push(
-            {group: 'nodes', data: {id: 'https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/'} },
+            {group: 'nodes', data: {id: 'https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/', label:"author"} },
             {group: 'edges', data: {source: 'https://s11.no/2022/a2a-fair-metrics/06-http-citeas-describedby-item/test-apple-data.csv', target: 'https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/'} }//id: count, label: predicate
         ) #}
 
@@ -120,7 +120,8 @@
                     //'text-margin-y': -20,
                     'target-arrow-shape': 'triangle', // Arrow at target node
                     'target-arrow-color': 'black',    // Match edge color
-                    'curve-style': 'bezier'
+                    'curve-style': 'bezier',
+                    'target-arrow-scale': 3
                 }
                 }
             ]
@@ -136,6 +137,28 @@
         cy.nodes().forEach(node => {
             colour = colourCode(node.data('label'))
             node.style('background-color', colour);
+        });
+
+        function showLinksetSignposts(node) 
+        {
+            console.log(node.hasClass('show'))
+        }
+
+        function hideLinksetSignposts(node) 
+        {
+            console.log(node.hasClass('show'))
+        }
+
+
+
+        cy.on('tap', 'node[label = "linkset"]', function(evt) {
+            let node = evt.target;
+            if (node.hasClass('show')) {
+                hideLinksetSignposts(node);
+            } else {
+                showLinksetSignposts(node);
+            }
+            node.toggleClass('show')
         });
 
         function colourCode(predicate) 
@@ -161,7 +184,7 @@
                     return "purple";
                     break;
                 case "author":
-                    return "brown";
+                    return "turquoise";
                     break;
                 case "collection":
                     return "pink";
