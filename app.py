@@ -7,10 +7,6 @@ app = Flask(__name__, template_folder='templates', static_folder='static', stati
 def index():
     return render_template('index.html')
 
-@app.route('/greet/<name>')
-def greet(name):
-    return "hello " + name
-
 @app.route('/crawl', methods=['GET', 'POST'])
 def crawl():
     if request.method == 'POST':
@@ -31,6 +27,17 @@ def crawl():
 
        
         if debug:
+            q = """
+            PREFIX ns: <http://www.iana.org/assignments/relation/>
+
+            SELECT ?o
+            WHERE {
+                ?s ns:type ?o .
+            }
+            """
+            abc = graphs[0]["signposts"].query(q)
+            for row in abc:
+                print(row)
             return render_template('debug.html', graphs = graphs)
         else:
             return render_template('crawled.html', graphs = graphs)
