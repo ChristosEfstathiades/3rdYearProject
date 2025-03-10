@@ -141,12 +141,45 @@
 
         function showLinksetSignposts(node) 
         {
-            console.log(node.hasClass('show'))
+            s = []
+            {% for graph in graphs %}
+                {% for linkset in graph.linksets%}
+                    if ('{{linkset}}' == node.data('id')) 
+                    {
+                        {% for s, p, o in graph.linksets[linkset].signposts %}
+                            predicate = '{{p}}'
+                            predicate = predicate.split('/').pop();
+                            s.push(
+                                {group: 'nodes', data: {id: '{{o}}', label: predicate} },
+                                {group: 'edges', data: {source: node.data('id'), target: '{{o}}'} }
+                            )
+                        {% endfor %}
+                    }
+                {% endfor %}
+            {% endfor %}
+            // method 1 - reposition whole layout
+            cy.add(s)
+            cy.layout({
+                name: 'circle',
+                animate: true
+            }).run();
+
+            cy.nodes().forEach(node => {
+                colour = colourCode(node.data('label'))
+                node.style('background-color', colour);
+            });
         }
 
         function hideLinksetSignposts(node) 
         {
-            console.log(node.hasClass('show'))
+            //let edgesToRemove = cy.edges(`[source = "${node.data('id')}"]`).filter(edge => edge.target().id() !== node.data('id'));
+            //let targetNodes = edgesToRemove.targets();
+            let edgesToRemove = cy.edges(`[source = "${node.data('id')}"]`); // Select all outgoing edges
+            let targetNodes = edgesToRemove.targets().filter(tnode => tnode.id() !== node.data('id')); // Exclude source node itself
+            console.log(edgesToRemove)
+            console.log(targetNodes)
+            edgesToRemove.remove(); // Remove the selected edges
+            targetNodes.remove();
         }
 
 
@@ -155,6 +188,7 @@
             let node = evt.target;
             if (node.hasClass('show')) {
                 hideLinksetSignposts(node);
+                // TODO: fix duplicate edges
             } else {
                 showLinksetSignposts(node);
             }
