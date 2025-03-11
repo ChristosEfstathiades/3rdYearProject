@@ -16,6 +16,10 @@
         <div id="menu">
             <div id="keycodes">
                 <div class="item">
+                    <div class="key" style="background-color: #212529;"></div>
+                    <span>URI</span>
+                </div>
+                <div class="item">
                     <div class="key" style="background-color: #f5b7b1;"></div>
                     <span>author</span>
                 </div>
@@ -48,6 +52,7 @@
                     <span>linkset</span>
                 </div>
             </div>
+            <button id="back"><a href="{{ url_for('index') }}">Back</a></button>
         </div>
     </main>
     
@@ -111,6 +116,8 @@
                     'label': 'data(id)', // Use node's 'label' property
                     //'text-valign': 'center', // Center vertically
                     //'text-halign': 'center', // Center horizontall
+                    //'text-wrap': 'wrap',
+                    //'text-max-width': '80px',
                     'background-color': 'white',
                     'width': 45,
                     'height': 45,
@@ -133,7 +140,8 @@
         cy.add(signposts)
 
         var layout = cy.elements().layout({
-            name: 'circle'
+            name: 'concentric',
+            minNodeSpacing: 50
           });
           
         layout.run();
@@ -164,8 +172,9 @@
             // method 1 - reposition whole layout
             cy.add(s)
             cy.layout({
-                name: 'circle',
-                animate: true
+                name: 'concentric',
+                animate: true,
+                minNodeSpacing: 50
             }).run();
 
             cy.nodes().forEach(node => {
@@ -176,12 +185,8 @@
 
         function hideLinksetSignposts(node) 
         {
-            //let edgesToRemove = cy.edges(`[source = "${node.data('id')}"]`).filter(edge => edge.target().id() !== node.data('id'));
-            //let targetNodes = edgesToRemove.targets();
             let edgesToRemove = cy.edges(`[source = "${node.data('id')}"]`); // Select all outgoing edges
             let targetNodes = edgesToRemove.targets().filter(tnode => tnode.id() !== node.data('id')); // Exclude source node itself
-            console.log(edgesToRemove)
-            console.log(targetNodes)
             edgesToRemove.remove(); // Remove the selected edges
             targetNodes.remove();
         }

@@ -32,12 +32,11 @@ class Crawler:
             counter += 1
             self.visited.add(url)    
 
-    def crawl_html(self, url): # TODO https://edp-portal.eurac.edu/discovery/b7db0a55-31ac-4339-bf60-a6124fb45915 has both http and html signposting that differ sooooo
+    def crawl_html(self, url): # TODO https://edp-portal.eurac.edu/discovery/b7db0a55-31ac-4339-bf60-a6124fb45915 has both http and html signposting that differ so maybe union
         try:
             self.signposts = signposting.find_signposting_html(url)
         except:
             print("Error: No HTML signposting found") 
-            # TODO: create error response 
         else:
             if len(self.signposts.signposts) > 0:
                 print("html signposting found")
@@ -104,7 +103,7 @@ class Crawler:
                     linksetSignposts = signposting.find_signposting_linkset(linkset.target)
                 except:
                     print("Couldn't parse linkset of type " + linkset.type)
-                    # TODO some linksets arent getting parsed that should likely due to some profile stuff (application/linkset, application/linket+json) compare ones that work to ones that don't - whats the difference
+                    # TODO some linksets arent getting parsed that should likely due to some profile stuff (application/linkset, application/linket+json) compare json files that work to ones that don't - whats the difference, try looking at rel/profile and use rdflib-ld
                 else:
                     sortedSignposts = signposting.Signposting(signposts = linksetSignposts.signposts)
                     signposts = self.collect_signposts(sortedSignposts)
@@ -128,7 +127,7 @@ class Crawler:
 
     def cite_as(self, signposts, graph):
         if signposts.citeAs != None:
-            graph.add((URIRef(self.origin), self.ns.citeas, URIRef(signposts.citeAs.target))) # TODO: change self.origin
+            graph.add((URIRef(self.origin), self.ns.citeas, URIRef(signposts.citeAs.target))) # TODO: change self.origin to context or anchor or something
         else:
             print("No cite-as link at " + self.origin)
 
