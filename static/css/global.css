@@ -1,6 +1,7 @@
 html {
     font-family: Arial;
-    background-color: #1c2833;
-    color: rgba(255, 255, 255, 0.8);
-    /* background-color: rgb(200,200,200); */
+    /* background-color: #1c2833; */
+    /* color: rgba(255, 255, 255, 0.8); */
+    color: #212529;
+    background-color: #ecf0f1;
 }

@@ -16,35 +16,35 @@
         <div id="menu">
             <div id="keycodes">
                 <div class="item">
-                    <div class="key" style="background-color: turquoise;"></div>
+                    <div class="key" style="background-color: #f5b7b1;"></div>
                     <span>author</span>
                 </div>
                 <div class="item">
-                    <div class="key" style="background-color: blue;"></div>
+                    <div class="key" style="background-color: #3498db;"></div>
                     <span>cite-as</span>
                 </div>
                 <div class="item">
-                    <div class="key" style="background-color: green;"></div>
+                    <div class="key" style="background-color: #27ae60;"></div>
                     <span>describedby</span>
                 </div>
                 <div class="item">
-                    <div class="key" style="background-color: yellow;"></div>
+                    <div class="key" style="background-color: #f1c40f;"></div>
                     <span>type</span>
                 </div>
                 <div class="item">
-                    <div class="key" style="background-color: orange;"></div>
+                    <div class="key" style="background-color: #e67e22;"></div>
                     <span>license</span>
                 </div>
                 <div class="item">
-                    <div class="key" style="background-color: red;"></div>
+                    <div class="key" style="background-color: #c0392b;"></div>
                     <span>item</span>
                 </div>
                 <div class="item">
-                    <div class="key" style="background-color: pink;"></div>
+                    <div class="key" style="background-color: #935116;"></div>
                     <span>collection</span>
                 </div>
                 <div class="item">
-                    <div class="key" style="background-color: purple;"></div>
+                    <div class="key" style="background-color: #8e44ad;"></div>
                     <span>linkset</span>
                 </div>
             </div>
@@ -94,7 +94,11 @@
             elements: {
                 nodes: [
                 {
-                    data: { id: origin }
+                    data: { id: origin },
+                    style: {
+                        'width': 75,
+                        'height': 75
+                    }
                 }
                 ]
             },
@@ -110,7 +114,7 @@
                     'background-color': 'white',
                     'width': 45,
                     'height': 45,
-                    'color': 'white'
+                    'color': '#212529'
                 }
                 },
                 {
@@ -200,31 +204,31 @@
             switch (predicate)
             {
                 case "citeas":
-                    return "blue";
+                    return "#3498db";
                     break;
                 case "item":
-                    return "red";
+                    return "#c0392b";
                     break;
                 case "describedby":
-                    return "green";
+                    return "#27ae60";
                     break;
                 case "license":
-                    return "orange";
+                    return "#e67e22";
                     break;
                 case "type":
-                    return "yellow";
+                    return "#f1c40f";
                     break;
                 case "linkset":
-                    return "purple";
+                    return "#8e44ad";
                     break;
                 case "author":
-                    return "turquoise";
+                    return "#f5b7b1";
                     break;
                 case "collection":
-                    return "pink";
+                    return "#935116";
                     break;
                 default:
-                    return "black"
+                    return "#2c3e50"
             }
         }
      </script>
