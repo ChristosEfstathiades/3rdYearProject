@@ -5,7 +5,7 @@ app = Flask(__name__, template_folder='templates', static_folder='static', stati
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', error_msg=None)
 
 @app.route('/crawl', methods=['GET', 'POST'])
 def crawl():
@@ -13,15 +13,15 @@ def crawl():
         url = request.form.get('url')
         debug = request.form.get('debug')
 
-        # https://doi.org/10.34894/SRSB8I
 
         crawled = Crawler(url)
         crawled.crawl()
         
-        
         graphs = crawled.graphs
-        print(len(graphs))
-        # TODO Return error message when graphs is empty
+        print(str(len(graphs))+ " Graph(s) found")
+        
+        if len(graphs) == 0:
+            return render_template('index.html', error_msg="Error: No signposting found")
 
         # graphs[0].serialize(format="xml", destination="./RDF/describedBy.rdf")
 

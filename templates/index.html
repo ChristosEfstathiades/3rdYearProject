@@ -18,6 +18,9 @@
             </div>
             <input type="submit" value="Submit">
         </form>
+        {% if error_msg %}
+            <span style="color: #c0392b;">{{error_msg}}</span>
+        {% endif %}
     </main>
 </body>
 </html>
