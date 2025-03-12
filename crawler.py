@@ -59,12 +59,14 @@ class Crawler:
 
     def collect_signposts(self, signposts):
         graph = Graph()
+        # for link in signposts.signposts:
+        #     print(link.rel, self.subject(link))
         self.cite_as(signposts, graph)
         self.items(signposts, graph)
         self.author(signposts, graph)
         self.licenses(signposts, graph)
         self.types(signposts, graph)
-        # self.collection(signposts, graph)
+        self.collection(signposts, graph)
         self.linksets(signposts, graph)
         self.described_by(signposts, graph)
         if len(graph) > 0:
@@ -134,6 +136,7 @@ class Crawler:
     def items(self, signposts, graph):
         for signpost in signposts.items:
             graph.add((URIRef(self.origin), self.ns.item, URIRef(signpost.target))) 
+            self.addURL(signpost.target) # TODO see if this works or needs more error handling
         
 
     def author(self, signposts, graph):
@@ -153,6 +156,7 @@ class Crawler:
             graph.add((URIRef(self.origin), self.ns.type, URIRef(signpost.target)))
 
     def collection(self, signposts, graph):
+        print(signposts.collection)
         if signposts.collection != None:
             graph.add((URIRef(self.origin), self.ns.collection, URIRef(signposts.collection.target))) 
             self.addURL(signposts.collection.target) # verify that URI is URL using absoluteURI function
@@ -163,6 +167,12 @@ class Crawler:
         if url not in self.visited:
             self.urls.append(url)
             self.visited.add(url)
+
+    def subject(self, signpost):
+        if signpost.context != None:
+            return URIRef(signpost.context)
+        else:
+            return URIRef(self.origin)
 
     def test(self):
         return [self.signposts, self.signposts.signposts, self.signposts.context, self.signposts.other_contexts]
