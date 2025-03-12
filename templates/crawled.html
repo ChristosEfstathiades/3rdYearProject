@@ -71,7 +71,7 @@
                     {group: 'edges', data: {source: '{{s}}', target: '{{o}}'} }//id: count, label: predicate
                 )
             {% endfor %}
-            {# {% for link in graph.linksets %}
+            {% for link in graph.linksets %}
                 linkset = '{{link}}'
                 console.log(linkset)
                 {% for s, p, o in graphs[0].linksets[link].signposts %}
@@ -82,7 +82,7 @@
                         {group: 'edges', data: {source: linkset, target: '{{o}}'} }//id: count, label: predicate
                     )
                 {% endfor %}
-            {% endfor %} #}
+            {% endfor %}
         {% endfor %}
 
         // for testing
