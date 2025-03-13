@@ -136,7 +136,7 @@ class Crawler:
     def items(self, signposts, graph):
         for signpost in signposts.items:
             graph.add((self.subject(signpost), self.ns.item, URIRef(signpost.target))) 
-            self.addURL(signpost.target) # TODO see if this works or needs more error handling
+            self.addURL(signpost.target) 
         
 
     def author(self, signposts, graph):
