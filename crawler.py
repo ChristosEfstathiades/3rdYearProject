@@ -121,44 +121,44 @@ class Crawler:
 
     def linksets(self, signposts, graph):
         for linkset in signposts.linksets:
-            graph.add((URIRef(self.origin), self.ns.linkset, URIRef(linkset.target)))
+            graph.add((self.subject(linkset), self.ns.linkset, URIRef(linkset.target)))
     
     def described_by(self, signposts, graph):
         for signpost in signposts.describedBy:
-            graph.add((URIRef(self.origin), self.ns.describedby, URIRef(signpost.target)))
+            graph.add((self.subject(signpost), self.ns.describedby, URIRef(signpost.target)))
 
     def cite_as(self, signposts, graph):
         if signposts.citeAs != None:
-            graph.add((URIRef(self.origin), self.ns.citeas, URIRef(signposts.citeAs.target))) # TODO: change self.origin to context or anchor or something
+            graph.add((self.subject(signposts.citeAs), self.ns.citeas, URIRef(signposts.citeAs.target))) # TODO: change self.origin to context or anchor or something
         else:
             print("No cite-as link at " + self.origin)
 
     def items(self, signposts, graph):
         for signpost in signposts.items:
-            graph.add((URIRef(self.origin), self.ns.item, URIRef(signpost.target))) 
+            graph.add((self.subject(signpost), self.ns.item, URIRef(signpost.target))) 
             self.addURL(signpost.target) # TODO see if this works or needs more error handling
         
 
     def author(self, signposts, graph):
         for signpost in signposts.authors:
-            graph.add((URIRef(self.origin), self.ns.author, URIRef(signpost.target))) 
+            graph.add((self.subject(signpost), self.ns.author, URIRef(signpost.target))) 
             self.addURL(signpost.target) # verify that URI is URL
         
     def licenses(self, signposts, graph):
         if signposts.license != None:
-            graph.add((URIRef(self.origin), self.ns.license, URIRef(signposts.license.target))) 
+            graph.add((self.subject(signposts.license), self.ns.license, URIRef(signposts.license.target))) 
             self.addURL(signposts.license.target) # verify that URI is URL
         else:
             print("No license link at " + self.origin)
 
     def types(self, signposts, graph):
         for signpost in signposts.types:
-            graph.add((URIRef(self.origin), self.ns.type, URIRef(signpost.target)))
+            graph.add((self.subject(signpost), self.ns.type, URIRef(signpost.target)))
 
     def collection(self, signposts, graph):
         print(signposts.collection)
         if signposts.collection != None:
-            graph.add((URIRef(self.origin), self.ns.collection, URIRef(signposts.collection.target))) 
+            graph.add((self.subject(signposts.collection), self.ns.collection, URIRef(signposts.collection.target))) 
             self.addURL(signposts.collection.target) # verify that URI is URL using absoluteURI function
         else:
             print("No collection link at " + self.origin)
