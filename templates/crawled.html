@@ -52,7 +52,13 @@
                     <span>linkset</span>
                 </div>
             </div>
+            <form action="{{ url_for('store') }}" method="post">
+                <input type="hidden" name="graph" value="{{joint_kg['signposts']}}">
+                <input type="hidden" name="provenance" value="{{joint_kg['provenances'][0]}}">
+                <button type="submit">Store Graph</button>
+            </form>
             <button id="back"><a href="{{ url_for('index') }}">Back</a></button>
+            
         </div>
     </main>
     
@@ -232,7 +238,6 @@
             let node = evt.target;
             if (node.hasClass('show')) {
                 hideLinksetSignposts(node);
-                // TODO: fix duplicate edges
             } else {
                 showLinksetSignposts(node);
             }

@@ -1,7 +1,9 @@
 from flask import Flask, request, render_template, url_for
 from crawler import Crawler
 from rdflib import Graph
+import requests
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
+FUSEKI_DATASET_URL = "http://localhost:3030/ds/data?graph="
 
 @app.route("/")
 def index():
@@ -34,15 +36,27 @@ def crawl():
             joint_signposts += graph['signposts']
             for linkset in graph['linksets']:
                 joint_signposts += graph['linksets'][linkset]['signposts']
+            # for data in graph['metadata']:
+            #     joint_signposts += graph['metadata'][data]
+            
         joint_kg =  {
             'provenances': provenances,
             'signposts': joint_signposts
         }
-        for s,p,o in joint_kg['signposts']:
-            print(s,p,o)
+
         
 
-        # graphs[0].serialize(format="xml", destination="./RDF/describedBy.rdf")
+        rdf = joint_kg['signposts'].serialize(format='turtle')
+
+        headers = {"Content-Type": "text/turtle"}
+        response = requests.post(FUSEKI_DATASET_URL+joint_kg['provenances'][0], data=rdf, headers=headers)
+        if response.status_code in [200, 201]:
+            print(1)
+        else:
+            print(2)
+        
+
+        # joint_kg['signposts'].serialize(format="ttl", destination="./RDF/"+joint_kg['provenances'][0]+".ttl")
 
        
         if debug:
@@ -60,6 +74,23 @@ def crawl():
             return render_template('debug.html', graphs = graphs, joint_kg = joint_kg)
         else:
             return render_template('crawled.html', graphs = graphs, joint_kg = joint_kg, labels = labels)
+
+
+@app.route('/store', methods=['POST'])
+def store():
+    if request.method == "POST":
+        graph = request.form.get('graph')
+        provenance = request.form.get('provenance')
+
+        rdf = graph.serialize(format='turtle')
+
+        headers = {"Content-Type": "text/turtle"}
+        response = requests.post(FUSEKI_DATASET_URL+provenance, data=rdf, headers=headers)
+        if response.status_code in [200, 201]:
+            print(1)
+        else:
+            print(2)
+        
 
 
 if __name__ == '__main__':
