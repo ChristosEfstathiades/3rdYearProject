@@ -19,6 +19,7 @@ def crawl():
         url = request.form.get('url')
         debug = request.form.get('debug')
         labels = request.form.get('labels')
+        edgecolor = request.form.get('edges')
 
 
         crawled = Crawler(url)
@@ -76,7 +77,7 @@ def crawl():
             #     print(row)
             return render_template('debug.html', graphs = graphs, joint_kg = joint_kg)
         else:
-            return render_template('crawled.html', graphs = graphs, joint_kg = joint_kg, labels = labels)
+            return render_template('crawled.html', graphs = graphs, joint_kg = joint_kg, labels = labels, edgecolor=edgecolor)
 
 
 @app.route('/store', methods=['POST'])

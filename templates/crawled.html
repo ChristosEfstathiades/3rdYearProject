@@ -52,11 +52,11 @@
                     <span>linkset</span>
                 </div>
             </div>
-            <form action="{{ url_for('store') }}" method="post">
+            {# <form action="{{ url_for('store') }}" method="post">
                 <input type="hidden" name="graph" value="{{joint_kg['signposts']}}">
                 <input type="hidden" name="provenance" value="{{joint_kg['provenances'][0]}}">
                 <button type="submit">Store Graph</button>
-            </form>
+            </form> #}
             <button id="back"><a href="{{ url_for('index') }}">Back</a></button>
             
         </div>
@@ -150,7 +150,7 @@
                     //'text-halign': 'center', // Center horizontall
                     //'text-wrap': 'wrap',
                     //'text-max-width': '80px',
-                    'background-color': 'white',
+                    'background-color': '#2c3e50',
                     'width': 45,
                     'height': 45,
                     'color': '#212529'
@@ -178,11 +178,17 @@
           });
           
         layout.run();
-
+        {% if edgecolor %}
+        cy.edges().forEach(edge => {
+            colour = colourCode(edge.data('label'))
+            edge.style('line-color', colour);
+        });
+        {% else %}
         cy.nodes().forEach(node => {
             colour = colourCode(node.data('label'))
             node.style('background-color', colour);
         });
+        {% endif %}
 
         {# function showLinksetSignposts(node) 
         {
