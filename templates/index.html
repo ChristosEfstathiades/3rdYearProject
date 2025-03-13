@@ -9,22 +9,40 @@
 </head>
 <body>
     <main>
-        <h1>Submit URL</h1>
+        <h1>Enter a URL </h1>
         <form action="{{ url_for('crawl') }}" method="POST">
             <input id="urlInput" type="text" name="url" placeholder="https://example.org">
-            <div>
-                <input type="checkbox" name="debug" id="debug">
-                <label for="debug">Debug</label>
-            </div>
-            <div>
-                <input type="checkbox" name="labels">
-                <label for="labels">Show Labels</label>
+            <div id="options">
+                <div class="option">
+                    <input type="checkbox" name="debug" id="debug">
+                    <label for="debug">Debug</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" name="labels">
+                    <label for="labels">Show Labels</label>
+                </div>
             </div>
             <input type="submit" value="Submit">
         </form>
         {% if error_msg %}
             <span style="color: #c0392b;">{{error_msg}}</span>
         {% endif %}
+        <section>
+        <h3>Saved Graphs:</h3>
+        {% for url in URLs %}
+            <p class="savedURL">{{url}}</p>
+        {% endfor %}
+        
+        </section>
     </main>
+
+
+    <script>
+        document.querySelectorAll('.savedURL').forEach(p => {
+            p.addEventListener('click', function() {
+                document.getElementById('urlInput').value = this.textContent;
+            });
+        });
+    </script>
 </body>
 </html>

@@ -3,11 +3,15 @@ from crawler import Crawler
 from rdflib import Graph
 import requests
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
-FUSEKI_DATASET_URL = "http://localhost:3030/ds/data?graph="
+FUSEKI_STORE_URL = "http://localhost:3030/main/data?graph="
+FUSEKI_QUERY_URL = "http://localhost:3030/main/query"
 
 @app.route("/")
 def index():
-    return render_template('index.html', error_msg=None)
+    URLs = fetchURLs()
+    
+
+    return render_template('index.html', error_msg=None, URLs = URLs)
 
 @app.route('/crawl', methods=['GET', 'POST'])
 def crawl():
@@ -24,7 +28,8 @@ def crawl():
         print(str(len(graphs))+ " Graph(s) found")
         
         if len(graphs) == 0:
-            return render_template('index.html', error_msg="Error: No signposting found")
+            URLs = fetchURLs()
+            return render_template('index.html', error_msg="Error: No signposting found", URLs = URLs)
         
 
 
@@ -49,16 +54,14 @@ def crawl():
         rdf = joint_kg['signposts'].serialize(format='turtle')
 
         headers = {"Content-Type": "text/turtle"}
-        response = requests.post(FUSEKI_DATASET_URL+joint_kg['provenances'][0], data=rdf, headers=headers)
+        response = requests.post(FUSEKI_STORE_URL+joint_kg['provenances'][0], data=rdf, headers=headers)
         if response.status_code in [200, 201]:
-            print(1)
+            print("Succesfully stored graph")
         else:
-            print(2)
+            URLs = fetchURLs()
+            return render_template('index.html', error_msg="Error: Could not store graph", URLs = URLs)
         
 
-        # joint_kg['signposts'].serialize(format="ttl", destination="./RDF/"+joint_kg['provenances'][0]+".ttl")
-
-       
         if debug:
             # q = """
             # PREFIX ns: <http://www.iana.org/assignments/relation/>
@@ -85,13 +88,29 @@ def store():
         rdf = graph.serialize(format='turtle')
 
         headers = {"Content-Type": "text/turtle"}
-        response = requests.post(FUSEKI_DATASET_URL+provenance, data=rdf, headers=headers)
+        response = requests.post(FUSEKI_STORE_URL+provenance, data=rdf, headers=headers)
         if response.status_code in [200, 201]:
             print(1)
         else:
             print(2)
         
-
+def fetchURLs():
+    g = Graph()
+    qres = g.query(
+        """
+        SELECT DISTINCT ?g
+        WHERE {
+        SERVICE <http://localhost:3030/main/query> {
+            { GRAPH ?g { ?s ?p ?o } }
+        }
+        }
+        LIMIT 10
+        """
+    )
+    URLs = []
+    for row in qres:
+        URLs.append(row.g)
+    return URLs
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5555, debug=True)
