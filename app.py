@@ -2,9 +2,11 @@ from flask import Flask, request, render_template, url_for
 from crawler import Crawler
 from rdflib import Graph
 import requests
+import urllib.parse
+
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
-FUSEKI_STORE_URL = "http://localhost:3030/main/data?graph="
-FUSEKI_QUERY_URL = "http://localhost:3030/main/query"
+FUSEKI_STORE_URL = "http://localhost:3030/ds/data?graph="
+FUSEKI_QUERY_URL = "http://localhost:3030/ds/query"
 
 @app.route("/")
 def index():
@@ -20,6 +22,7 @@ def crawl():
         debug = request.form.get('debug')
         labels = request.form.get('labels')
         edgecolor = request.form.get('edges')
+        metadata = request.form.get('metadata')
 
 
         crawled = Crawler(url)
@@ -36,23 +39,28 @@ def crawl():
 
 
         joint_signposts = Graph()
+        metadata = Graph()
         provenances = []
         for graph in graphs:
             provenances.append(graph['provenance'])
             joint_signposts += graph['signposts']
             for linkset in graph['linksets']:
                 joint_signposts += graph['linksets'][linkset]['signposts']
-            # for data in graph['metadata']:
-            #     joint_signposts += graph['metadata'][data]
+                for link in graph['linksets'][linkset]['metadata']:
+                    metadata += graph['linksets'][linkset]['metadata'][link]
+            for link in graph['metadata']:
+                metadata += graph['metadata'][link]
             
         joint_kg =  {
             'provenances': provenances,
-            'signposts': joint_signposts
+            'signposts': joint_signposts,
+            'metadata': metadata
         }
 
-        
 
-        rdf = joint_kg['signposts'].serialize(format='turtle')
+        
+        graph = joint_kg['metadata'] + joint_kg['signposts']
+        rdf = graph.serialize(format='turtle')
 
         headers = {"Content-Type": "text/turtle"}
         response = requests.post(FUSEKI_STORE_URL+joint_kg['provenances'][0], data=rdf, headers=headers)
@@ -77,8 +85,27 @@ def crawl():
             #     print(row)
             return render_template('debug.html', graphs = graphs, joint_kg = joint_kg)
         else:
-            return render_template('crawled.html', graphs = graphs, joint_kg = joint_kg, labels = labels, edgecolor=edgecolor)
+            return render_template('crawled.html', graphs = graphs, joint_kg = joint_kg, labels = labels, edgecolor=edgecolor, metadata=metadata)
 
+@app.route('/fetch', methods=['GET'])
+def fetch():
+    url = request.args.get('url')
+    encoded_graph_url = urllib.parse.quote(url, safe=':/')
+    g = Graph()
+    gres = g.query(
+        f"""
+        SELECT ?s ?p ?o WHERE {{
+            SERVICE <{FUSEKI_QUERY_URL}> {{
+                GRAPH <https://s11.no/2022/a2a-fair-metrics/15-http-describedby-no-conneg/> {{
+                    ?s ?p ?o .
+                    FILTER(STRSTARTS(STR(?p), "http://www.iana.org/assignments/relation/"))
+                }}
+            }}
+        }}
+        """
+    )
+    for row in gres:
+        print(row.s, row.p, row.o)
 
 @app.route('/store', methods=['POST'])
 def store():
@@ -98,14 +125,14 @@ def store():
 def fetchURLs():
     g = Graph()
     qres = g.query(
-        """
+        f"""
         SELECT DISTINCT ?g
-        WHERE {
-        SERVICE <http://localhost:3030/main/query> {
-            { GRAPH ?g { ?s ?p ?o } }
-        }
-        }
-        LIMIT 10
+        WHERE {{
+        SERVICE <{FUSEKI_QUERY_URL}> {{
+            {{ GRAPH ?g {{ ?s ?p ?o }} }}
+        }}
+        }}
+        LIMIT 50
         """
     )
     URLs = []

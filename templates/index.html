@@ -25,6 +25,10 @@
                     <input type="checkbox" name="edges">
                     <label for="edges">Colour Coded Edges</label>
                 </div>
+                <div class="option">
+                    <input type="checkbox" name="metadata">
+                    <label for="metadata">Display Metadata</label>
+                </div>
             </div>
             <input type="submit" value="Submit">
         </form>
@@ -33,8 +37,9 @@
         {% endif %}
         <section>
         <h3>Saved Graphs:</h3>
-        {% for url in URLs %}
+        {% for url in URLs[::-1] %}
             <p class="savedURL">{{url}}</p>
+            {# <a href="/fetch?url={{url}}" class="savedURL">{{url}}</a> #}
         {% endfor %}
         
         </section>

@@ -121,6 +121,16 @@
                 {group: 'edges', data: {source: '{{s}}', target: '{{o}}', label: predicate} }//label: predicate
             )
         {% endfor %}
+        ///// METADATA GRAPH DEMO//////
+        {% if metadata %}
+        {% for s, p, o in joint_kg['metadata'] %}
+            predicate = '{{p}}'
+            signposts.push(
+                {group: 'nodes', data: {id: '{{o}}', label: predicate}, classes:'metadata' },
+                {group: 'edges', data: {source: '{{s}}', target: '{{o}}', label: predicate} }//label: predicate
+            )
+        {% endfor %}
+        {%endif%}
         ////////////////////////////////////
 
         console.log(signposts)
@@ -172,8 +182,10 @@
         });
         cy.add(signposts)
 
+        
+
         var layout = cy.elements().layout({
-            name: 'concentric',
+            name: 'concentric', // circle
             minNodeSpacing: 50
           });
           
@@ -189,6 +201,13 @@
             node.style('background-color', colour);
         });
         {% endif %}
+
+        {# cy.style()
+        .selector('.metadata')
+        .style({
+            'background-color': '#a9cce3'
+        })
+        .update(); #}
 
         {# function showLinksetSignposts(node) 
         {

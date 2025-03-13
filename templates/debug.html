@@ -91,6 +91,20 @@
         </tr>
         {% endfor %}
     </table>
-    
+    <p>---------------- Joint metadata -------------------</p>
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Predicate</th>
+            <th>Object</th>
+        </tr>
+        {% for s, p, o in joint_kg['metadata'] %}
+        <tr>
+            <th>{% print(s) %}</th>
+            <th>{% print(p) %}</th>
+            <th>{% print(o) %}</th>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
