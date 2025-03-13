@@ -11,7 +11,7 @@ class Crawler:
         self.ns = Namespace("http://www.iana.org/assignments/relation/")
         self.graphs = []
         self.urls = [URI]#, "https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/"]
-        self.depthLimit = 10
+        self.depthLimit = 20
         self.visited = {URI}
 
     def crawl(self):
@@ -59,8 +59,6 @@ class Crawler:
 
     def collect_signposts(self, signposts):
         graph = Graph()
-        # for link in signposts.signposts:
-        #     print(link.rel, self.subject(link))
         self.cite_as(signposts, graph)
         self.items(signposts, graph)
         self.author(signposts, graph)
@@ -156,7 +154,6 @@ class Crawler:
             graph.add((self.subject(signpost), self.ns.type, URIRef(signpost.target)))
 
     def collection(self, signposts, graph):
-        print(signposts.collection)
         if signposts.collection != None:
             graph.add((self.subject(signposts.collection), self.ns.collection, URIRef(signposts.collection.target))) 
             self.addURL(signposts.collection.target) # verify that URI is URL using absoluteURI function
