@@ -10,7 +10,7 @@
 <body>
    
     
-        {% set q = """
+        {# {% set q = """
             PREFIX ns: <http://www.iana.org/assignments/relation/>
 
             SELECT ?o
@@ -18,11 +18,10 @@
                 ?s ns:type ?o
             }
             """ %}
-        {% set abc = graphs[0].signposts.query(q) %}
+        {% set abc = graphs[0].signposts.query(q) %} #}
         
     {% for graph in graphs %}
         <p>Provenance: {{graph.provenance}}</p>
-        <p>Signposts: </p>
         <p>---------------- Signposts -------------------</p>
         <table>
             <tr>
@@ -76,6 +75,22 @@
         </table>
         {% endfor %}
     {% endfor %}
+
+    <p>---------------- Joint signposts -------------------</p>
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Predicate</th>
+            <th>Object</th>
+        </tr>
+        {% for s, p, o in joint_kg['signposts'] %}
+        <tr>
+            <th>{% print(s) %}</th>
+            <th>{% print(p) %}</th>
+            <th>{% print(o) %}</th>
+        </tr>
+        {% endfor %}
+    </table>
     
 </body>
 </html>
