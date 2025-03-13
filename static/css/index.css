@@ -18,3 +18,25 @@ form {
 form > * {
     margin: 10px 0;
 }
+
+#options {
+    display: flex;
+}
+
+.option {
+    margin-right: .5em;
+}
+
+.savedURL {
+    color: #337ab7;
+}
+
+.savedURL:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+}
