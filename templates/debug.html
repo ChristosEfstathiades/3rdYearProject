@@ -8,17 +8,6 @@
     <title>Results</title>
 </head>
 <body>
-   
-    
-        {# {% set q = """
-            PREFIX ns: <http://www.iana.org/assignments/relation/>
-
-            SELECT ?o
-            WHERE {
-                ?s ns:type ?o
-            }
-            """ %}
-        {% set abc = graphs[0].signposts.query(q) %} #}
         
     {% for graph in graphs %}
         <p>Provenance: {{graph.provenance}}</p>

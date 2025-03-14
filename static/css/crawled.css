@@ -5,7 +5,7 @@
 }
 
 #cy {
-  width: 75vw;
+  width: 73vw;
   height: 90vh;
   /* margin: auto; */
   /* display: block; */
@@ -13,7 +13,7 @@
 }
 
 #menu {
-  width: 25vw;
+  width: 27vw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -48,5 +48,8 @@
   color: #212529;
 }
 
+#subgraph, #predicate{
+  width: 100%;
+}
 
 
