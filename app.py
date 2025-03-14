@@ -1,6 +1,6 @@
-from flask import Flask, request, render_template, url_for
+from flask import Flask, jsonify, request, render_template, url_for
 from crawler import Crawler
-from rdflib import Graph
+from rdflib import Graph, URIRef
 import requests
 import urllib.parse
 
@@ -22,8 +22,7 @@ def crawl():
         debug = request.form.get('debug')
         labels = request.form.get('labels')
         edgecolor = request.form.get('edges')
-        metadata = request.form.get('metadata')
-
+        displaymetadata = request.form.get('metadata')
 
         crawled = Crawler(url)
         crawled.crawl()
@@ -40,17 +39,30 @@ def crawl():
 
         joint_signposts = Graph()
         metadata = Graph()
+        metadataAdded = set()
         provenances = []
         for graph in graphs:
+            metadataLength = len(metadata)
             provenances.append(graph['provenance'])
             joint_signposts += graph['signposts']
             for linkset in graph['linksets']:
                 joint_signposts += graph['linksets'][linkset]['signposts']
-                for link in graph['linksets'][linkset]['metadata']:
-                    metadata += graph['linksets'][linkset]['metadata'][link]
             for link in graph['metadata']:
-                metadata += graph['metadata'][link]
+                if bool(graph['metadata'][link]) and link not in metadataAdded:
+                    metadata += graph['metadata'][link]
+                    metadataAdded.add(link)
+                    print(link)
+                    break
+            if len(metadata) == metadataLength:
+                for link in graph['linksets'][linkset]['metadata']:
+                    if bool(graph['linksets'][linkset]['metadata'][link]) and link not in metadataAdded:
+                        metadata += graph['linksets'][linkset]['metadata'][link]
+                        metadataAdded.add(link)
+                        break
+        print(len(metadata))
+
             
+        metadata.serialize(destination="test.rdf", format="xml")
         joint_kg =  {
             'provenances': provenances,
             'signposts': joint_signposts,
@@ -72,41 +84,43 @@ def crawl():
         
 
         if debug:
-            # q = """
-            # PREFIX ns: <http://www.iana.org/assignments/relation/>
-
-            # SELECT ?o
-            # WHERE {
-            #     ?s ns:type ?o .
-            # }
-            # """
-            # abc = graphs[0]["signposts"].query(q)
-            # for row in abc:
-            #     print(row)
             return render_template('debug.html', graphs = graphs, joint_kg = joint_kg)
         else:
-            return render_template('crawled.html', graphs = graphs, joint_kg = joint_kg, labels = labels, edgecolor=edgecolor, metadata=metadata)
+            return render_template('crawled.html', graphs = graphs, joint_kg = joint_kg, labels = labels, edgecolor=edgecolor, displaymetadata=displaymetadata)
 
 @app.route('/fetch', methods=['GET'])
 def fetch():
     url = request.args.get('url')
-    encoded_graph_url = urllib.parse.quote(url, safe=':/')
     g = Graph()
-    gres = g.query(
-        f"""
-        SELECT ?s ?p ?o WHERE {{
-            SERVICE <{FUSEKI_QUERY_URL}> {{
-                GRAPH <https://s11.no/2022/a2a-fair-metrics/15-http-describedby-no-conneg/> {{
-                    ?s ?p ?o .
-                    FILTER(STRSTARTS(STR(?p), "http://www.iana.org/assignments/relation/"))
-                }}
-            }}
-        }}
-        """
-    )
-    for row in gres:
-        print(row.s, row.p, row.o)
 
+    q = f"""
+        SELECT ?s ?p ?o FROM <{url}> WHERE {{
+            ?s ?p ?o .
+            FILTER(STRSTARTS(STR(?p), "http://www.iana.org/assignments/relation/"))
+        }}
+    """
+    params = {
+        "query": q,
+        "format": "json"
+    }
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    response = requests.post(FUSEKI_QUERY_URL, data=params, headers=headers)
+    
+    data = response.json()
+
+    for binding in data['results']['bindings']:
+        g.add((URIRef(binding["s"]["value"]), URIRef(binding["p"]["value"]), URIRef(binding["o"]["value"])))
+    for s,p,o in g:
+        print(s, p, o)
+
+    joint_kg =  {
+            'provenances': [url],
+            'signposts': g
+    }
+    
+    return render_template('crawled.html', graphs = None, joint_kg = joint_kg, labels = False, edgecolor=True, displaymetadata=False)
+    
+    
 @app.route('/store', methods=['POST'])
 def store():
     if request.method == "POST":

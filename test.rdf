@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:ns1="http://schema.org/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+  <rdf:Description rdf:about="https://orcid.org/0000-0003-1291-8524">
+    <ns1:url rdf:resource="http://www.mountainresearch.at/index.php/en/team-en/81-team-en/194-andrea-fischer-en.html"/>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:name>Andrea Fischer</ns1:name>
+    <ns1:identifier>https://orcid.org/0000-0003-1291-8524</ns1:identifier>
+    <ns1:email>andrea.fischer@oeaw.ac.at</ns1:email>
+    <ns1:familyName>Fischer</ns1:familyName>
+    <ns1:givenName>Andrea</ns1:givenName>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://orcid.org/0000-0002-0856-5183">
+    <ns1:familyName>Schwikowski</ns1:familyName>
+    <ns1:name>Margit Schwikowski</ns1:name>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:identifier>https://orcid.org/0000-0002-0856-5183</ns1:identifier>
+    <ns1:givenName>Margit</ns1:givenName>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N41379f6eab9c402fbe9f0bcee2e6d0da">
+    <ns1:familyName>Mayewski</ns1:familyName>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:name>Paul Mayewski</ns1:name>
+    <ns1:givenName>Paul</ns1:givenName>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2f72cab1b1a54989ac915ca7002e4c82">
+    <ns1:encodingFormat>application/zip</ns1:encodingFormat>
+    <rdf:type rdf:resource="http://schema.org/DataDownload"/>
+    <ns1:contentUrl rdf:resource="https://doi.pangaea.de/10.1594/PANGAEA.867908?format=zip"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://doi.org/10.1594/PANGAEA.867908">
+    <ns1:comment>In summer 2015, a ground-penetrating radar (GPR) survey was carried out at Kilimanjaro's largest remaining ice body, the Northern Ice Field (NIF). Two GPR systems at center frequencies of 100 and 200 MHz were used to investigate bedrock topography, ice thickness and internal stratigraphy at NIF. A photometric estimation of the height of NIF's vertical wall was used to validate ice thickness inferred from GPR using a constant wave speed of 0.168 m/ns. The GPR profiles revealed an ice thickness ranging between (6.1 ± 0.5) and (53.5 ± 1.0) m. These data were combined with a very high resolution digital elevation model in order to spatially extrapolate ice thickness and give an estimate of the total ice volume remaining at NIF's southern portion.</ns1:comment>
+    <ns1:identifier>https://doi.org/10.1594/PANGAEA.867908</ns1:identifier>
+    <ns1:url rdf:resource="https://doi.pangaea.de/10.1594/PANGAEA.867908"/>
+    <ns1:publisher rdf:nodeID="Nb7a91bf76a4e4e93b25d03d77a336588"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0003-2612-8347"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0001-8877-1325"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0002-0856-5183"/>
+    <ns1:creator rdf:nodeID="N0f65dba15f684c04867b7202ff45fdf9"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0003-1291-8524"/>
+    <ns1:creator rdf:nodeID="Nd4cc521372304dfb9fe9d9453f16e4e2"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0002-7527-5880"/>
+    <ns1:creator rdf:nodeID="N41379f6eab9c402fbe9f0bcee2e6d0da"/>
+    <ns1:creator rdf:nodeID="N51a7ce62121f4feaa0b322f5e0a56806"/>
+    <ns1:creator rdf:nodeID="Nfcd47e03c6d0415fad496ac9bb53cc4b"/>
+    <ns1:creator rdf:nodeID="Nbda30f547aaf40f0a4a1b803d43e1a30"/>
+    <ns1:conditionsOfAccess>unrestricted</ns1:conditionsOfAccess>
+    <ns1:description>Although its Holocene glacier history is still subject to debate, the ongoing iconic decline of Kilimanjaro's largest remaining ice body, the Northern Ice Field (NIF), has been documented extensively based on surface and photogrammetric measurements. The study presented here adds, for the first time, ground-penetrating radar (GPR) data at center frequencies of 100 and 200 MHz to investigate bedrock topography, ice thickness and internal stratigraphy at NIF. The direct comparison of the GPR signal to the visible glacier stratigraphy at NIF's vertical walls is used to validate ice thickness and reveals that the major internal reflections seen by GPR can be associated with dust layers. Englacial reflections can be traced consistently within our 200 MHz profiles, indicating an undisturbed internal stratigraphy within NIF's central flat area. We show that it is possible to follow isochrone layers between two former NIF ice core drilling sites and a sampling site on NIF's vertical wall. As a result, these isochrone layers provide constraints for future attempts at linking age-depth information obtained from multiple locations at NIF. The GPR profiles reveal an ice thickness ranging between (6.1 ± 0.5) and (53.5 ± 1.0) m. Combining these data with a very high resolution digital elevation model we spatially extrapolate ice thickness and give an estimate of the total ice volume remaining at NIF's southern portion as (12.0 ± 0.3) 10**6 m**3.</ns1:description>
+    <ns1:name>Ice thickness of Kilimanjaro's Northern Ice Field mapped by ground-penetrating radar</ns1:name>
+    <ns1:distribution rdf:nodeID="N2f72cab1b1a54989ac915ca7002e4c82"/>
+    <ns1:abstract>Although its Holocene glacier history is still subject to debate, the ongoing iconic decline of Kilimanjaro's largest remaining ice body, the Northern Ice Field (NIF), has been documented extensively based on surface and photogrammetric measurements. The study presented here adds, for the first time, ground-penetrating radar (GPR) data at center frequencies of 100 and 200 MHz to investigate bedrock topography, ice thickness and internal stratigraphy at NIF. The direct comparison of the GPR signal to the visible glacier stratigraphy at NIF's vertical walls is used to validate ice thickness and reveals that the major internal reflections seen by GPR can be associated with dust layers. Englacial reflections can be traced consistently within our 200 MHz profiles, indicating an undisturbed internal stratigraphy within NIF's central flat area. We show that it is possible to follow isochrone layers between two former NIF ice core drilling sites and a sampling site on NIF's vertical wall. As a result, these isochrone layers provide constraints for future attempts at linking age-depth information obtained from multiple locations at NIF. The GPR profiles reveal an ice thickness ranging between (6.1 ± 0.5) and (53.5 ± 1.0) m. Combining these data with a very high resolution digital elevation model we spatially extrapolate ice thickness and give an estimate of the total ice volume remaining at NIF's southern portion as (12.0 ± 0.3) 10**6 m**3.</ns1:abstract>
+    <ns1:size rdf:nodeID="Nc197644c15ac4d7fa6f395df80ac0844"/>
+    <ns1:spatialCoverage rdf:nodeID="N036dbff096cc424b9275a99bf929b653"/>
+    <ns1:isAccessibleForFree rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ns1:isAccessibleForFree>
+    <ns1:license rdf:resource="https://creativecommons.org/licenses/by/3.0/"/>
+    <ns1:includedInDataCatalog rdf:nodeID="N4d58a3de5a66410789259678dd212bb8"/>
+    <ns1:inLanguage>en</ns1:inLanguage>
+    <rdf:type rdf:resource="http://schema.org/Dataset"/>
+    <ns1:datePublished rdf:datatype="http://schema.org/Date">2016-11-09</ns1:datePublished>
+    <ns1:additionalType>dataset publication series</ns1:additionalType>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N0d9c89424d614c4caab32e4b3fb9d5ae">
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:email>pascal.bohleber@unive.it</ns1:email>
+    <ns1:familyName>Bohleber</ns1:familyName>
+    <ns1:name>Pascal Bohleber</ns1:name>
+    <ns1:givenName>Pascal</ns1:givenName>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4d58a3de5a66410789259678dd212bb8">
+    <rdf:type rdf:resource="http://schema.org/DataCatalog"/>
+    <ns1:name>PANGAEA</ns1:name>
+    <ns1:disambiguatingDescription>Data Publisher for Earth &amp; Environmental Science</ns1:disambiguatingDescription>
+    <ns1:url rdf:resource="https://www.pangaea.de/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://orcid.org/0000-0003-2612-8347">
+    <ns1:givenName>Pascal</ns1:givenName>
+    <ns1:familyName>Sirguey</ns1:familyName>
+    <ns1:identifier>https://orcid.org/0000-0003-2612-8347</ns1:identifier>
+    <ns1:name>Pascal Sirguey</ns1:name>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://orcid.org/0000-0001-8877-1325">
+    <ns1:familyName>Cullen</ns1:familyName>
+    <ns1:name>Nicolas J Cullen</ns1:name>
+    <ns1:givenName>Nicolas J</ns1:givenName>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:identifier>https://orcid.org/0000-0001-8877-1325</ns1:identifier>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://doi.org/10.5194/tc-11-469-2017">
+    <ns1:creator rdf:nodeID="N85919d48c0e34bd699118b143e9359b8"/>
+    <ns1:creator rdf:nodeID="N0d9c89424d614c4caab32e4b3fb9d5ae"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0003-1291-8524"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0002-7527-5880"/>
+    <ns1:creator rdf:nodeID="N5de2ba419c954626b714a987c54d550d"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0001-8877-1325"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0002-0856-5183"/>
+    <ns1:creator rdf:nodeID="Ncedcd2c15ed94535bcbe88e5eba37a1a"/>
+    <ns1:creator rdf:nodeID="N203179bd48614c67a19843f3cd7d44c6"/>
+    <ns1:creator rdf:nodeID="N9985ecc73b0e4990b144ade268c59b02"/>
+    <ns1:creator rdf:resource="https://orcid.org/0000-0003-2612-8347"/>
+    <ns1:pagination>469-482</ns1:pagination>
+    <ns1:identifier>https://doi.org/10.5194/tc-11-469-2017</ns1:identifier>
+    <ns1:isPartOf rdf:nodeID="Nbd7d31d1585748548dbe8bf65a42bfbe"/>
+    <ns1:isBasedOn rdf:resource="https://doi.org/10.1594/PANGAEA.867908"/>
+    <ns1:url rdf:resource="https://doi.org/10.5194/tc-11-469-2017"/>
+    <rdf:type rdf:resource="http://schema.org/ScholarlyArticle"/>
+    <rdf:type rdf:resource="http://schema.org/CreativeWork"/>
+    <ns1:datePublished rdf:datatype="http://schema.org/Date">2017</ns1:datePublished>
+    <ns1:name>Ground-penetrating radar reveals ice thickness and undisturbed englacial layers at Kilimanjaro's Northern Ice Field</ns1:name>
+    <ns1:additionalType>journal article</ns1:additionalType>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N51a7ce62121f4feaa0b322f5e0a56806">
+    <ns1:name>Patrick Klenk</ns1:name>
+    <ns1:familyName>Klenk</ns1:familyName>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:givenName>Patrick</ns1:givenName>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd4cc521372304dfb9fe9d9453f16e4e2">
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:givenName>Pascal</ns1:givenName>
+    <ns1:email>pascal.bohleber@unive.it</ns1:email>
+    <ns1:familyName>Bohleber</ns1:familyName>
+    <ns1:name>Pascal Bohleber</ns1:name>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ncedcd2c15ed94535bcbe88e5eba37a1a">
+    <ns1:familyName>Mayewski</ns1:familyName>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:name>Paul Mayewski</ns1:name>
+    <ns1:givenName>Paul</ns1:givenName>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://orcid.org/0000-0002-7527-5880">
+    <ns1:givenName>Helene</ns1:givenName>
+    <ns1:name>Helene Hoffmann</ns1:name>
+    <ns1:familyName>Hoffmann</ns1:familyName>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:identifier>https://orcid.org/0000-0002-7527-5880</ns1:identifier>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N5de2ba419c954626b714a987c54d550d">
+    <ns1:givenName>Mariusz</ns1:givenName>
+    <ns1:name>Mariusz Potocki</ns1:name>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:familyName>Potocki</ns1:familyName>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc197644c15ac4d7fa6f395df80ac0844">
+    <ns1:unitText>datasets</ns1:unitText>
+    <ns1:value rdf:datatype="http://www.w3.org/2001/XMLSchema#double">12.0</ns1:value>
+    <rdf:type rdf:resource="http://schema.org/QuantitativeValue"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nbd7d31d1585748548dbe8bf65a42bfbe">
+    <rdf:type rdf:resource="http://schema.org/Periodical"/>
+    <rdf:type rdf:resource="http://schema.org/PublicationVolume"/>
+    <ns1:volumeNumber>11(1)</ns1:volumeNumber>
+    <ns1:name>The Cryosphere</ns1:name>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N0f65dba15f684c04867b7202ff45fdf9">
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:givenName>Douglas R</ns1:givenName>
+    <ns1:familyName>Hardy</ns1:familyName>
+    <ns1:name>Douglas R Hardy</ns1:name>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N85919d48c0e34bd699118b143e9359b8">
+    <ns1:name>Patrick Klenk</ns1:name>
+    <ns1:familyName>Klenk</ns1:familyName>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:givenName>Patrick</ns1:givenName>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb7a91bf76a4e4e93b25d03d77a336588">
+    <rdf:type rdf:resource="http://schema.org/Organization"/>
+    <ns1:disambiguatingDescription>Data Publisher for Earth &amp; Environmental Science</ns1:disambiguatingDescription>
+    <ns1:url rdf:resource="https://www.pangaea.de/"/>
+    <ns1:name>PANGAEA</ns1:name>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N203179bd48614c67a19843f3cd7d44c6">
+    <ns1:familyName>Hardy</ns1:familyName>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:givenName>Douglas R</ns1:givenName>
+    <ns1:name>Douglas R Hardy</ns1:name>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nbda30f547aaf40f0a4a1b803d43e1a30">
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+    <ns1:familyName>Potocki</ns1:familyName>
+    <ns1:name>Mariusz Potocki</ns1:name>
+    <ns1:givenName>Mariusz</ns1:givenName>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nfcd47e03c6d0415fad496ac9bb53cc4b">
+    <ns1:familyName>Sold</ns1:familyName>
+    <ns1:name>Leo Sold</ns1:name>
+    <ns1:givenName>Leo</ns1:givenName>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9985ecc73b0e4990b144ade268c59b02">
+    <ns1:familyName>Sold</ns1:familyName>
+    <ns1:name>Leo Sold</ns1:name>
+    <ns1:givenName>Leo</ns1:givenName>
+    <rdf:type rdf:resource="http://schema.org/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne3b5d9cf22404f7c94e19b0ec700463e">
+    <ns1:box>-3.059926 37.344638 -3.055993 37.353663</ns1:box>
+    <rdf:type rdf:resource="http://schema.org/GeoShape"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N036dbff096cc424b9275a99bf929b653">
+    <ns1:geo rdf:nodeID="Ne3b5d9cf22404f7c94e19b0ec700463e"/>
+    <rdf:type rdf:resource="http://schema.org/Place"/>
+  </rdf:Description>
+</rdf:RDF>

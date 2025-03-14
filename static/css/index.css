@@ -29,6 +29,8 @@ form > * {
 
 .savedURL {
     color: #337ab7;
+    text-decoration: none;
+    margin-bottom: .5rem;
 }
 
 .savedURL:hover {

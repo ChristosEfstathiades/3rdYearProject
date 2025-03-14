@@ -22,7 +22,7 @@
                     <label for="labels">Show Labels</label>
                 </div>
                 <div class="option">
-                    <input type="checkbox" name="edges">
+                    <input type="checkbox" name="edges" checked>
                     <label for="edges">Colour Coded Edges</label>
                 </div>
                 <div class="option">
@@ -38,8 +38,8 @@
         <section>
         <h3>Saved Graphs:</h3>
         {% for url in URLs[::-1] %}
-            <p class="savedURL">{{url}}</p>
-            {# <a href="/fetch?url={{url}}" class="savedURL">{{url}}</a> #}
+            {# <p class="savedURL">{{url}}</p> #}
+            <a href="/fetch?url={{url}}" class="savedURL">{{url}}</a>
         {% endfor %}
         
         </section>
