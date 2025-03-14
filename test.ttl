@@ -1,4 +1,0 @@
-@prefix ns1: <https://www.iana.org/assignments/link-relations/> .
-
-<https://doi.org/10.34894/SRSB8I> ns1:author <https://ror.org/02rmd1t30> .
-

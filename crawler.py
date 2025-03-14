@@ -10,7 +10,7 @@ class Crawler:
         self.describedByFormats = ["turtle", "application/ld+json", "text/turtle", "application/rdf+xml", "application/n-triples"] # application/json, application/xml
         self.ns = Namespace("http://www.iana.org/assignments/relation/")
         self.graphs = []
-        self.urls = [URI]#, "https://s11.no/2022/a2a-fair-metrics/34-http-item-rocrate/"]
+        self.urls = [URI]
         self.depthLimit = 20
         self.visited = {URI}
 
@@ -171,6 +171,4 @@ class Crawler:
         else:
             return URIRef(self.origin)
 
-    def test(self):
-        return [self.signposts, self.signposts.signposts, self.signposts.context, self.signposts.other_contexts]
             

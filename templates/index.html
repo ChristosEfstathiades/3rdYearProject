@@ -15,7 +15,7 @@
             <div id="options">
                 <div class="option">
                     <input type="checkbox" name="debug" id="debug">
-                    <label for="debug">Debug</label>
+                    <label for="debug">Table Form</label>
                 </div>
                 <div class="option">
                     <input type="checkbox" name="labels">
@@ -26,7 +26,7 @@
                     <label for="edges">Colour Coded Edges</label>
                 </div>
                 <div class="option">
-                    <input type="checkbox" name="metadata">
+                    <input type="checkbox" name="metadata" checked>
                     <label for="metadata">Display Metadata</label>
                 </div>
             </div>
@@ -38,7 +38,6 @@
         <section>
         <h3>Saved Graphs:</h3>
         {% for url in URLs[::-1] %}
-            {# <p class="savedURL">{{url}}</p> #}
             <a href="/fetch?url={{url}}" class="savedURL">{{url}}</a>
         {% endfor %}
         

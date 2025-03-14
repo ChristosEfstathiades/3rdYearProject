@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/css/global.css">
     <link rel="stylesheet" type="text/css" href="/static/css/crawled.css">
-    <script src="/static/js/cytoscape.min.js"></script>
+    {# <script src="/static/js/cytoscape.min.js"></script> #}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.0/cytoscape.min.js"></script>
+
     <title>Results</title>
 </head>
 <body>
@@ -56,11 +58,34 @@
                     <span>Metadata</span>
                 </div>
             </div>
-            {# <form action="{{ url_for('store') }}" method="post">
-                <input type="hidden" name="graph" value="{{joint_kg['signposts']}}">
-                <input type="hidden" name="provenance" value="{{joint_kg['provenances'][0]}}">
-                <button type="submit">Store Graph</button>
-            </form> #}
+            <section>
+                <h3>Queries</h3>
+                <form action="{{ url_for('subgraph') }}" method="post">
+                    <input type="hidden" value="{{joint_kg['provenances'][0]}}" name="graph">
+                    <input type="hidden" value="{{metadata}}" name="metadata">
+                    <label for="subgraph">Filter Subgraph:</label>
+                    <select name="subgraph" id="subgraph">
+                        {% for provenance in joint_kg['provenances'] %}
+                            <option value="{{provenance}}">{{provenance}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Execute</button>
+                </form>
+
+                <form action="{{ url_for('predicate') }}" method="post">
+                    <input type="hidden" value="{{joint_kg['provenances'][0]}}" name="graph">
+                    <label for="subgraph">Filter Predicate:</label>
+                    <select name="predicate" id="predicate">
+                        {% set predicates = ["citeas", "describedby", "item", "author", "type", "license", "linkset"] %}
+                        {% for predicate in predicates %}
+                            <option value="{{predicate}}">{{predicate}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Execute</button>
+                </form>
+                
+            
+            </section>
             <button id="back"><a href="{{ url_for('index') }}">Back</a></button>
             
         </div>
@@ -70,203 +95,134 @@
 
 
 
-        let signposts = []
-        {# let origin = '{{ graphs[0].provenance }}'
-        {% for graph in graphs%}
-            signposts.push(
-                {
-                    data: { id: '{{graph.provenance}}' },
-                    style: {
-                        'width': 75,
-                        'height': 75
-                    }
-                }
-            )
-            {% for s, p, o in graph.signposts %}
+        
+        var cy;
+        // create graph takes (signposts, provenance)
+        function createGraph() {
+            let signposts = []
+            {% for s, p, o in joint_kg['signposts'] %}
                 predicate = '{{p}}'
                 predicate = predicate.split('/').pop();
                 signposts.push(
-                    {group: 'nodes', data: {id: '{{o}}', label: predicate} },
-                    {group: 'edges', data: {source: '{{s}}', target: '{{o}}'} }//id: count, label: predicate
-                )
-            {% endfor %}
-            {% for link in graph.linksets %}
-                linkset = '{{link}}'
-                console.log(linkset)
-                {% for s, p, o in graphs[0].linksets[link].signposts %}
-                    predicate = '{{p}}'
-                    predicate = predicate.split('/').pop();
-                    signposts.push(
-                        {group: 'nodes', data: {id: '{{o}}', label: predicate} },
-                        {group: 'edges', data: {source: linkset, target: '{{o}}'} }//id: count, label: predicate
-                    )
-                {% endfor %}
-            {% endfor %}
-        {% endfor %} #}
-
-
-        // JOINT KG ////////////////////////
-        {# {% for provenance in joint_kg['provenances'] %}
-            signposts.push(
-                {
-                    data: { id: '{{provenance}}' },
-                    style: {
-                        'width': 75,
-                        'height': 75
-                    }
-                }
-            )
-        {% endfor %} #}
-        {% for s, p, o in joint_kg['signposts'] %}
-            predicate = '{{p}}'
-            predicate = predicate.split('/').pop();
-            signposts.push(
-                {group: 'nodes', data: {id: '{{o}}', label: predicate} },
-                {group: 'edges', data: {source: '{{s}}', target: '{{o}}', label: predicate} }//label: predicate
-            )
-        {% endfor %}
-        ///// METADATA GRAPH DEMO//////
-        {% if displaymetadata %}
-            {% for s, p, o in joint_kg['metadata'] %}
-                predicate = '{{p}}'
-                signposts.push(
-                    {group: 'nodes', data: {id: '{{o}}', label: predicate}, classes:'metadata' },
+                    {group: 'nodes', data: {id: '{{o}}', label: predicate, shorthand: '{{o}}'.slice(0,20)+"..."} },
                     {group: 'edges', data: {source: '{{s}}', target: '{{o}}', label: predicate} }//label: predicate
                 )
             {% endfor %}
-        {%endif%}
-        ////////////////////////////////////
-
-        console.log(signposts)
-        
-        var cy = cytoscape({
-            container: document.getElementById('cy'),
-
-            elements: {
-                nodes: [
-                {
-                    data: { id: '{{joint_kg['provenances'][0]}}' },
-                    style: {
-                        'width': 150,
-                        'height': 150
-                    }
-                }
-                ]
-            },
-
-            // so we can see the ids
-            style: [
-                {
-                selector: 'node',
-                style: {
-                    'label': 'data(id)', // Use node's 'label' property
-                    //'text-valign': 'center', // Center vertically
-                    //'text-halign': 'center', // Center horizontall
-                    //'text-wrap': 'wrap',
-                    //'text-max-width': '80px',
-                    'background-color': '#2c3e50',
-                    'width': 100,
-                    'height': 100,
-                    'color': '#212529'
-                }
-                },
-                {
-                selector: 'edge',
-                style: {
-                    {% if labels %}
-                    'label': 'data(label)',
-                    {% endif %}
-                    //'text-margin-y': -20,
-                    'target-arrow-shape': 'triangle', // Arrow at target node
-                    'target-arrow-color': 'black',    // Match edge color
-                    'curve-style': 'bezier'
-                }
-                }
-            ]
-        });
-        cy.add(signposts)
-
-        
-
-        var layout = cy.elements().layout({
-            name: 'concentric', // circle
-            minNodeSpacing: 50
-          });
-          
-        layout.run();
-        {% if edgecolor %}
-        cy.edges().forEach(edge => {
-            colour = colourCode(edge.data('label'))
-            edge.style('line-color', colour);
-        });
-        {% else %}
-        cy.nodes().forEach(node => {
-            colour = colourCode(node.data('label'))
-            if (node.hasClass('metadata')) {
-                colour = '#d4e6f1'
-            }
-            node.style('background-color', colour);
-        });
-        {% endif %}
-
-        {# cy.style()
-        .selector('.metadata')
-        .style({
-            'background-color': '#a9cce3'
-        })
-        .update(); #}
-
-        {# function showLinksetSignposts(node) 
-        {
-            s = []
-            {% for graph in graphs %}
-                {% for linkset in graph.linksets%}
-                    if ('{{linkset}}' == node.data('id')) 
-                    {
-                        {% for s, p, o in graph.linksets[linkset].signposts %}
-                            predicate = '{{p}}'
-                            predicate = predicate.split('/').pop();
-                            s.push(
-                                {group: 'nodes', data: {id: '{{o}}', label: predicate} },
-                                {group: 'edges', data: {source: node.data('id'), target: '{{o}}'} }
-                            )
-                        {% endfor %}
-                    }
+            ///// METADATA GRAPH DEMO//////
+            {% if displaymetadata %}
+                {% for s, p, o in joint_kg['metadata'] %}
+                    predicate = '{{p}}'
+                    if ('{{o}}') {
+                        signposts.push(
+                            {group: 'nodes', data: {id: '{{o}}', label: predicate, shorthand: '{{o}}'.slice(0,30)+"..."}, classes: ['metadata'] },
+                            {group: 'edges', data: {source: '{{s}}', target: '{{o}}', label: predicate } , classes: ['metadata'] }//label: predicate
+                        )
+                    }// check if string isnt empty
                 {% endfor %}
-            {% endfor %}
-            // method 1 - reposition whole layout
-            cy.add(s)
-            cy.layout({
-                name: 'concentric',
-                animate: true,
-                minNodeSpacing: 50
-            }).run();
+            {%endif%}
+            ////////////////////////////////////
+            cy = cytoscape({
+                container: document.getElementById('cy'),
 
+                {# elements: {
+                    nodes: [
+                    {
+                        data: { id: '{{joint_kg['provenances'][0]}}', shorthand: '{{joint_kg['provenances'][0]}}'.slice(0,30)+"..."},
+                        style: {
+                            'width': 150,
+                            'height': 150
+                        }
+                    }
+                    ]
+                }, #}
+
+                // so we can see the ids
+                style: [
+                    {
+                    selector: 'node',
+                    style: {
+                        'label': 'data(shorthand)', // Use node's 'label' property
+                        //'text-valign': 'center', // Center vertically
+                        //'text-halign': 'center', // Center horizontall
+                        //'text-wrap': 'wrap',
+                        //'text-max-width': '10px',
+                        'background-color': '#2c3e50',
+                        'width': 100,
+                        'height': 100,
+                        //'color': 'rgba(255,255,255,1)'
+                    }
+                    },
+                    {
+                    selector: 'edge',
+                    style: {
+                        {% if labels %}
+                        'label': 'data(label)',
+                        {% endif %}
+                        //'text-margin-y': 5,
+                        //'text-margin-x': 5,
+                        'target-arrow-shape': 'triangle', // Arrow at target node
+                        'target-arrow-color': 'black',    // Match edge color
+                        'curve-style': 'bezier',
+                        'text-background-color': 'white'
+                    }
+                    }
+                ]
+            });
+            cy.add({group: 'nodes', data: {id: '{{joint_kg['provenances'][0]}}', shorthand: '{{joint_kg['provenances'][0]}}'.slice(0,30)+"..."} })
+            cy.add(signposts)
+
+            var layout = cy.elements().layout({
+                name: 'concentric',// circle
+                minNodeSpacing: 50
+            });
+            
+            layout.run();
+            {% if edgecolor %}
+            cy.edges().forEach(edge => {
+                colour = colourCode(edge.data('label'))
+                if (edge.hasClass('metadata')) {
+                    colour = '#d4e6f1'
+                }
+                edge.style('line-color', colour);
+            });
+            {% else %}
             cy.nodes().forEach(node => {
                 colour = colourCode(node.data('label'))
+                if (node.hasClass('metadata')) {
+                    colour = '#d4e6f1'
+                }
                 node.style('background-color', colour);
+            });
+            {% endif %}
+
+
+            cy.on('mouseover', 'node', function(evt) {
+                let node = evt.target;
+                node.data('shorthand', node.id()); 
+            });
+
+            cy.on('mouseout', 'node', function(evt) {
+                let node = evt.target;
+                node.data('shorthand', node.id().slice(0,30)+"...");
             });
         }
 
-        function hideLinksetSignposts(node) 
-        {
-            let edgesToRemove = cy.edges(`[source = "${node.data('id')}"]`); // Select all outgoing edges
-            let targetNodes = edgesToRemove.targets().filter(tnode => tnode.id() !== node.data('id')); // Exclude source node itself
-            edgesToRemove.remove(); // Remove the selected edges
-            targetNodes.remove();
+        function destroyGraph() {
+            cy.destroy();
         }
+        
 
 
+        
 
-        cy.on('tap', 'node[label = "linkset"]', function(evt) {
-            let node = evt.target;
-            if (node.hasClass('show')) {
-                hideLinksetSignposts(node);
-            } else {
-                showLinksetSignposts(node);
-            }
-            node.toggleClass('show')
-        }); #}
+        
+
+        
+
+
+        
+
+        
 
         function colourCode(predicate) 
         {
@@ -300,6 +256,11 @@
                     return "#2c3e50"
             }
         }
+
+
+        
+                
+        createGraph()
      </script>
 </body>
 </html>

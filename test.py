@@ -2,6 +2,9 @@ import signposting
 from rdflib import Graph, URIRef, util, RDF, Literal, Namespace, BNode
 from rdflib.namespace import FOAF
 
+s = signposting.find_signposting_http_link("https://repository.dri.ie/linkset/vm41bk02f/lset")
+print(s)
+
 ns = Namespace("http://www.iana.org/assignments/relation/")
 ns2 = Namespace("http://example.org/ns/")
 g1 = Graph()
@@ -40,15 +43,15 @@ def find_equivalent_blank_nodes(g1, g2):
     return mapping
 
 
-bnode_mapping = find_equivalent_blank_nodes(g1, g2)
-print(bnode_mapping)
-for s, p, o in g2:
-    new_s = bnode_mapping.get(s, s)  # Replace blank nodes if found in mapping
-    new_o = bnode_mapping.get(o, o)
-    g1.add((new_s, p, new_o))  # Merge into g1
+# bnode_mapping = find_equivalent_blank_nodes(g1, g2)
+# print(bnode_mapping)
+# for s, p, o in g2:
+#     new_s = bnode_mapping.get(s, s)  # Replace blank nodes if found in mapping
+#     new_o = bnode_mapping.get(o, o)
+#     g1.add((new_s, p, new_o))  # Merge into g1
 
-for s,p,o in g1:
-    print(s,p,o)
+# for s,p,o in g1:
+#     print(s,p,o)
 # q = """
 # PREFIX ns: <http://www.iana.org/assignments/relation/>
 
@@ -68,8 +71,6 @@ for s,p,o in g1:
 # PREFIX ns: <http://www.iana.org/assignments/relation/>
 
 # SELECT ?s ?p ?o WHERE {
-#   GRAPH <https://doi.pangaea.de/10.1594/PANGAEA.867908> {
 #     ?s ?p ?o .
 #   	FILTER(STRSTARTS(STR(?p), "http://www.iana.org/assignments/relation/"))
-#   }
 # }
