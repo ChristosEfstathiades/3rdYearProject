@@ -157,12 +157,13 @@ def fetchURLs():
 
 @app.route('/subgraph', methods=['POST'])
 def subgraph():
-    print(1)
     subgraph = request.form.get('subgraph')
     graph = request.form.get('graph')
     metadata = request.form.get('metadata')
     g = Graph()
-    if metadata:
+    print(metadata)
+    if not metadata:
+        print(1)
         q = f"""
             SELECT ?s ?p ?o WHERE {{
             GRAPH <{graph}> {{  
@@ -173,6 +174,7 @@ def subgraph():
         }}
         """
     else:
+        print(2)
         q = f"""
             SELECT ?s ?p ?o WHERE {{
             GRAPH <{graph}> {{  
@@ -193,7 +195,7 @@ def subgraph():
 
     for binding in data['results']['bindings']:
         g.add((URIRef(binding["s"]["value"]), URIRef(binding["p"]["value"]), URIRef(binding["o"]["value"])))
-
+    
     joint_kg =  {
             'provenances': [subgraph],
             'signposts': g

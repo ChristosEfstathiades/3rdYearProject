@@ -2,8 +2,8 @@ import signposting
 from rdflib import Graph, URIRef, util, RDF, Literal, Namespace, BNode
 from rdflib.namespace import FOAF
 
-s = signposting.find_signposting_http_link("https://repository.dri.ie/linkset/vm41bk02f/lset")
-print(s)
+# s = signposting.find_signposting_http_link("https://repository.dri.ie/linkset/vm41bk02f/lset")
+# print(s)
 
 ns = Namespace("http://www.iana.org/assignments/relation/")
 ns2 = Namespace("http://example.org/ns/")
@@ -19,7 +19,8 @@ g2.add((URIRef("https://youtube.com"), ns.type, node2))
 g2.add((URIRef("https://facebook.com"), ns2.type, BNode()))
 g2.add((URIRef("https://rdflib.readthedocs.io/"), ns.item, Literal(10)))
 g2.add((node2, ns.item, Literal(10)))
-
+g3 = Graph().parse("https://www.youtube.com/watch?v=90YdQHjjieg")
+print(len(g3))
 
 
 def find_equivalent_blank_nodes(g1, g2):

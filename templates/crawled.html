@@ -62,7 +62,7 @@
                 <h3>Queries</h3>
                 <form action="{{ url_for('subgraph') }}" method="post">
                     <input type="hidden" value="{{joint_kg['provenances'][0]}}" name="graph">
-                    <input type="hidden" value="{{metadata}}" name="metadata">
+                    <input type="hidden" value="{{displaymetadata}}" name="metadata">
                     <label for="subgraph">Filter Subgraph:</label>
                     <select name="subgraph" id="subgraph">
                         {% for provenance in joint_kg['provenances'] %}
@@ -203,7 +203,7 @@
 
             cy.on('mouseout', 'node', function(evt) {
                 let node = evt.target;
-                node.data('shorthand', node.id().slice(0,30)+"...");
+                node.data('shorthand', node.id().slice(0,20)+"...");
             });
         }
 
